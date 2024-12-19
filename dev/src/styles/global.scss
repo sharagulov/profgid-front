@@ -1,0 +1,40 @@
+@import 'variables';
+
+* {
+  font-size: 14px;
+}
+
+html {
+  font-family: Arial, sans-serif;
+  background: $background-color;
+  color: $text-color;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  all: unset; /* Сбрасываем все стили */
+  cursor: pointer; /* Оставляем курсор как указатель */
+}
+
+button {
+  all: unset; /* Сбрасывает все стили по умолчанию */
+  font: inherit; /* Наследует шрифты от родителя */
+  cursor: pointer;
+}
+
+.sp {
+  font-size: 12px;
+}
+
+.hc {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.sc {
+  font-size: 14px;
+}
