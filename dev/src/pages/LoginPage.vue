@@ -3,6 +3,7 @@
     <main>
       <span class="hc">Авторизация</span>
       <form class="login-form" @submit.prevent="handleLogin">
+        
         <!-- Поле Логин -->
         <InputComponent
           id="login"

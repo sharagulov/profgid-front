@@ -4,7 +4,7 @@
       <div class="container">
         <div class="header-buttons">
           <img src="@/assets/LOGO_RED.png" alt="LOGO_RED">
-          <ButtonComponent variant="ghost">Карьера</ButtonComponent>
+          <router-link to="/carrer"><ButtonComponent variant="ghost">Карьера</ButtonComponent></router-link>
           <ButtonComponent variant="ghost">Обучение</ButtonComponent>
           <ButtonComponent variant="ghost">Библиотека</ButtonComponent>
           <ButtonComponent variant="ghost">О нас</ButtonComponent>
@@ -108,6 +108,7 @@ export default {
   position: fixed;
   width: 100%;
   box-sizing: border-box;
+  background-color: white;
 
   @media (min-width: 1000px) {
     display: none;
