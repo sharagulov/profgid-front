@@ -1,66 +1,36 @@
-Паша, [29.01.2025 20:59]
 <template>
   <div class="career-page">
     <main>
       <div class="left-section">
         <BlockComponent class="profile-block">
-          <div class="vertical-flex">
-            <img src="@/assets/AVATAR.png" alt="LOGO_RED">
-            <span>Петр Иванов</span>
-            <div class="info-list">
-              <div class="info-list-item" style="font-weight: bold;">
-                <span>Должность</span>
-                <div class="dotted-line"></div>
-                <span>Слесарь</span>
-              </div>
-              <div class="info-list-item">
-                <span>Разряд</span>
-                <div class="dotted-line"></div>
-                <span>3</span>
-              </div>
-              <div class="info-list-item">
-                <span>В штате с</span>
-                <div class="dotted-line"></div>
-                <span>07.06.2014</span>
-              </div>
-            </div>
-          </div>
+          <UserInfoComponent :currentUserId="1"/>
         </BlockComponent>  
 
         <BlockComponent class="achievements-section">
           <div class="vertical-flex">
-            <span>Достижения</span>
-            <p>Тут повставлять картинки, в дискорде зипка есть</p>
+            <span class="t14">Достижения</span>
+            <AchievementComponent :currentUserId="1"/>
           </div>
         </BlockComponent>  
         
         <BlockComponent class="statistics-section">
-          <div class="vertical-flex">
-            <span>Статистика</span>
-            <div class="info-list">
-              <div class="info-list-item" style="font-weight: bold;">
-                <span>Пройденные тесты</span>
-                <div class="dotted-line"></div>
-                <span>8</span>
-              </div>
-              <div class="info-list-item">
-                <span>Статьи</span>
-                <div class="dotted-line"></div>
-                <span>Доделать</span>
-              </div>
-            </div>
-          </div>
+            <UserStatisticsComponent :currentUserId="1"/>
         </BlockComponent>  
       </div>
 
       <div class="right-section">
-        <span class="hc">Карьера</span>
+        <b class="t32">Карьера</b>
 
         <div class="right-content">
           <div class="description-list">
             <div class="description-list-item">
-              <span style="align-content: center;">Ваш карьерный путь</span>
-              <img src="@/assets/INFO.png" alt="INFO">
+              <span class="t14" >Ваш карьерный путь</span>
+              <div style="align-content: center;">
+                <img src="@/assets/INFO.png" alt="INFO">
+                <TooltipComponent>
+                  <span>Текст в тултипе</span>
+                </TooltipComponent>
+              </div>
             </div>
             <BlockComponent class="career-path-block">
               <div class="vertical-flex">
@@ -72,8 +42,13 @@
           <div class="right-lower-section">
             <div class="description-list lower-description-list">
               <div class="description-list-item">
-                <span style="align-content: center;">Мои мероприятия</span>
+                <span class="t14" >Мои мероприятия</span>
+                <div style="align-content: center;">
                 <img src="@/assets/INFO.png" alt="INFO">
+                <TooltipComponent>
+                  <span>Текст в тултипе</span>
+                </TooltipComponent>
+              </div>
               </div>
               <span>Галочку с текстом</span>
               <BlockComponent variant="grey" class="event-section lower-block">
@@ -86,11 +61,16 @@
                   <span>Мероприятие</span>
                 </div>
               </BlockComponent>  
-            </div> 
+            </div>
             <div class="description-list lower-description-list">
               <div class="description-list-item">
-                <span style="align-content: center;">Аттестация</span>
+                <span class="t14">Аттестация</span>
+                <div style="align-content: center;">
                 <img src="@/assets/INFO.png" alt="INFO">
+                <TooltipComponent>
+                  <span>Текст в тултипе</span>
+                </TooltipComponent>
+              </div>
               </div>
               <span>Галочку с текстом</span>
               <BlockComponent variant="grey" class="certification-section lower-block">
@@ -108,14 +88,21 @@
 </template>
 
 <script>
+import TooltipComponent from '@/components/TooltipComponent.vue'
+import AchievementComponent from '@/components/AchievementComponent.vue'
 import BlockComponent from '@/components/BlockComponent.vue'
+import UserInfoComponent from '@/components/UserInfoComponent.vue'
+import UserStatisticsComponent from '@/components/UserStatisticsComponent.vue'
+
 
 export default {
-  components: { BlockComponent },
+  components: { BlockComponent, AchievementComponent, TooltipComponent, UserInfoComponent, UserStatisticsComponent},
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .career-page {
   padding-block: 130px;
   text-align: left;
@@ -191,7 +178,7 @@ export default {
   .dotted-line {
     flex-grow: 1; 
     height: 1px;
-    background-image: radial-gradient(circle, #CCC 5px, transparent 5px);
+    background-image: radial-gradient(circle, $low-gray 5px, transparent 5px);
     background-size: 5px 5px; 
     margin: 0 10px; 
   }

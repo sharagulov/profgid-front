@@ -27,11 +27,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .block-container {
   background-color: transparent;
-  border: 1px solid #CCC;
+  border: 1px solid $low-gray;
   border-radius: 20px; 
-  padding: 30px; 
+  padding: 20px; 
   display: flex; 
   justify-content: center;
   align-items: center;
@@ -41,7 +43,7 @@ export default {
   }
 
   &.grey {
-    background-color: #F2F2F2; 
+    background-color: $lowest-gray; 
     border: none; 
   }
 }

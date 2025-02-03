@@ -83,6 +83,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .login-page {
   display: flex;
   justify-content: center;
@@ -107,13 +109,13 @@ export default {
     }
 
     .info {
-      color: #ccc;
+      color: $low-gray;
       text-align: center;
       padding-inline: 20px;
     }
 
     .error-message {
-      color: #a30000;
+      color: $main-red;
       font-size: 0.9rem;
       text-align: center;
       margin-top: 1rem;

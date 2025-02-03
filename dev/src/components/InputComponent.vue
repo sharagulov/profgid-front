@@ -43,6 +43,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .input-field {
   display: flex;
   flex-direction: column;
@@ -61,7 +63,7 @@ export default {
     input {
       width: 100%;
       padding: 0.7rem 1rem;
-      border: 1px solid #ccc;
+      border: 1px solid $low-gray;
       border-radius: 9999px;
       outline: none;
       font-size: 14px;

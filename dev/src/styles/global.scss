@@ -6,8 +6,8 @@
 
 html {
   font-family: Arial, sans-serif;
-  background: $background-color;
-  color: $text-color;
+  background: white;
+  color: black;
 }
 
 body {
@@ -27,15 +27,10 @@ button {
   cursor: pointer;
 }
 
-.sp {
-  font-size: 12px;
+.t14 {
+  font-size: 16px;
 }
 
-.hc {
-  font-size: 32px;
-  font-weight: bold;
-}
-
-.sc {
-  font-size: 14px;
+.t32 {
+  font-size: 34 px;
 }

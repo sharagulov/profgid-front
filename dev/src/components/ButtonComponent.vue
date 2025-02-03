@@ -51,11 +51,11 @@ export default {
 
   // Вариант Default
   &.default-variant {
-    background-color: $primary-color;
+    background-color: $main-red;
     color: white;
 
     &:hover {
-      background-color: $primary-hover-color;
+      background-color: $main-red-hover;
     }
   }
 
@@ -65,7 +65,7 @@ export default {
     color: black;
 
     &:hover {
-      background-color: $primary-color;
+      background-color: $main-red;
       color: white;
     }
   }
@@ -80,7 +80,7 @@ export default {
     box-sizing: border-box;
 
     &:hover {
-      background-color: $primary-color;
+      background-color: $main-red;
       color: white;
     }
   }

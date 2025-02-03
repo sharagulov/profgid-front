@@ -70,12 +70,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .header {
   position: fixed;
   width: 100%;
   box-sizing: border-box;
   background: #fff;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid $low-gray;
   padding: 10px clamp(10px, 5vw, 100px);
 
   @media (max-width: 1000px) {

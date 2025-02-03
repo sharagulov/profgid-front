@@ -1,0 +1,44 @@
+{
+  "achievements": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "Аттестат в крови",
+      "date": "28.10, 15:00",
+      "desc": "Успешно завершите свою первую аттестацию",
+      "imgUrl": "/assets/achievements/Factory.png"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "name": "Мастер программирования",
+      "date": "01.11, 12:00",
+      "desc": "Напишите первый рабочий проект на Vue",
+      "imgUrl": "/assets/achievements/Mission.png"
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "name": "Криптокошелек",
+      "date": "02.11, 10:30",
+      "desc": "Сделайте первые шаги в Web3",
+      "imgUrl": "/assets/achievements/Prize.png"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Риас Гремори",
+      "position": "Слесарь",
+      "rank": "3",
+      "joined": "07.06.2014",
+      "experience": "11 лет, 3 месяца",
+      "lastPromoted": "11.12.2020",
+      "avatar": "/assets/avatars/avatar3.gif",
+      "passedTests": 8,
+      "passerArticles": 16,
+      "passedEvents": 1,
+      "passedAttestations": 2
+    }
+  ]
+}
