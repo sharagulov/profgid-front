@@ -43,10 +43,10 @@ export default {
     }
   },
   mounted() {
-    this.fetchUserInfo()
+    this.fetchUserStats()
   },
   methods: {
-    async fetchUserInfo() {
+    async fetchUserStats() {
       try {
         const response = await fetch(`http://localhost:3000/users/${this.currentUserId}`)
         this.stats = await response.json()

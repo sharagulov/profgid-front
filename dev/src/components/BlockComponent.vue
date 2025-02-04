@@ -30,6 +30,7 @@ export default {
 @import '@/styles/variables.scss';
 
 .block-container {
+  box-sizing: border-box;
   background-color: transparent;
   border: 1px solid $low-gray;
   border-radius: 20px; 

@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div v-if="showTooltip" class="tooltip-content">
+    <div v-if="showBlock" class="tooltip-content">
       <slot />
     </div>
   </transition>
@@ -11,7 +11,7 @@ export default {
   name: 'TooltipComponent',
   data() {
     return {
-      showTooltip: false
+      showBlock: false
     }
   },
   mounted() {
@@ -33,10 +33,10 @@ export default {
   },
   methods: {
     show() {
-      this.showTooltip = true
+      this.showBlock = true
     },
     hide() {
-      this.showTooltip = false
+      this.showBlock = false
     }
   }
 }
@@ -65,5 +65,6 @@ export default {
   align-items: center;
   width: fit-content;
   white-space: nowrap;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>

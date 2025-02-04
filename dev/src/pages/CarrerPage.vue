@@ -28,7 +28,7 @@
               <div style="align-content: center;">
                 <img src="@/assets/INFO.png" alt="INFO">
                 <TooltipComponent>
-                  <span>Текст в тултипе</span>
+                  <span>Здесь будет отображаться ваша карьера, а так же, кем вы можете стать </span>
                 </TooltipComponent>
               </div>
             </div>
@@ -46,7 +46,7 @@
                 <div style="align-content: center;">
                 <img src="@/assets/INFO.png" alt="INFO">
                 <TooltipComponent>
-                  <span>Текст в тултипе</span>
+                  <span>Мероприятия, которые вам сейчас доступны</span>
                 </TooltipComponent>
               </div>
               </div>
@@ -64,20 +64,16 @@
             </div>
             <div class="description-list lower-description-list">
               <div class="description-list-item">
-                <span class="t14">Аттестация</span>
+                <span class="t14">Аттестации</span>
                 <div style="align-content: center;">
-                <img src="@/assets/INFO.png" alt="INFO">
-                <TooltipComponent>
-                  <span>Текст в тултипе</span>
-                </TooltipComponent>
-              </div>
-              </div>
-              <span>Галочку с текстом</span>
-              <BlockComponent variant="grey" class="certification-section lower-block">
-                <div class="vertical-flex">
-                  <span>Одна аттестация</span>
+                  <img src="@/assets/INFO.png" alt="INFO">
+                  <TooltipComponent>
+                    <span>Здесь отображаются курсы, которые вы прошли</span>
+                  </TooltipComponent>
                 </div>
-              </BlockComponent>  
+              </div>      
+              <Toggler v-model="showAttestationsHistory" />
+              <AttestationComponent :currentUserId="1" :showAttestationsHistory="showAttestationsHistory"/>   
             </div> 
           </div>
         </div>
@@ -93,10 +89,18 @@ import AchievementComponent from '@/components/AchievementComponent.vue'
 import BlockComponent from '@/components/BlockComponent.vue'
 import UserInfoComponent from '@/components/UserInfoComponent.vue'
 import UserStatisticsComponent from '@/components/UserStatisticsComponent.vue'
+import AttestationComponent from '@/components/AttestationComponent.vue'
+import Toggler from '@/components/Toggler.vue'
 
 
 export default {
-  components: { BlockComponent, AchievementComponent, TooltipComponent, UserInfoComponent, UserStatisticsComponent},
+  components: { BlockComponent, AchievementComponent, TooltipComponent, UserInfoComponent, UserStatisticsComponent, AttestationComponent, Toggler },
+
+  data() {
+    return {
+      showAttestationsHistory: false // Начальное состояние чекбокса (скрыто)
+    };
+  }
 }
 </script>
 
@@ -126,7 +130,7 @@ export default {
 
   .left-section {
     display: flex;
-    width: 330px;
+    width: 335px;
     flex-direction: column;
     gap: 14px;
 

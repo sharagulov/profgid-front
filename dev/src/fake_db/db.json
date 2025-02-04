@@ -18,11 +18,35 @@
     },
     {
       "id": 3,
-      "userId": 2,
+      "userId": 1,
       "name": "Криптокошелек",
       "date": "02.11, 10:30",
       "desc": "Сделайте первые шаги в Web3",
       "imgUrl": "/assets/achievements/Prize.png"
+    },
+    {
+      "id": 4,
+      "userId": 1,
+      "name": "Претор",
+      "date": "03.11, 9:00",
+      "desc": "Выполните курс по своей специальности",
+      "imgUrl": "/assets/achievements/Laurel Wreath.png" 
+    },
+    {
+      "id": 5,
+      "userId": 1,
+      "name": "Магистр",
+      "date": "04.11, 15:30",
+      "desc": "Пройдите все курсы",
+      "imgUrl": "/assets/achievements/Mortarboard.png" 
+    },
+    {
+      "id": 6,
+      "userId": 1,
+      "name": "Спасатель",
+      "date": "05.11, 25:30",
+      "desc": "Окажите помощь при выполнении курса",
+      "imgUrl": "/assets/achievements/Volunteering.png" 
     }
   ],
   "users": [
@@ -38,7 +62,61 @@
       "passedTests": 8,
       "passerArticles": 16,
       "passedEvents": 1,
-      "passedAttestations": 2
+      "passedAttestations": 2,
+      "passedAttestationsHistory": [
+        {
+          "id": 1,
+          "name": "Безопасность труда",
+          "desc": "Тестирование знаний правил безопасности",
+          "passed": "27.11.2013"
+        },
+        {
+          "id": 2,
+          "name": "Заводские будни",
+          "desc": "Тестирование Тестирование Тестирование",
+          "passed": "03.03.2014"
+        }
+      ]
+    }
+  ],
+  "attestations": [
+    {
+      "id": 1,
+      "userIds": [2, 5, 10],
+      "name": "Безопасность труда",
+      "desc": "Тестирование знаний правил безопасности"
+    },
+    {
+      "id": 2,
+      "userIds": [9],
+      "name": "Заводские будни",
+      "desc": "Тестирование Тестирование Тестирование"
+    },
+    {
+      "id": 3,
+      "userIds": [7, 9, 59, 1],
+      "name": "Техническая аттестация",
+      "desc": "Аттестация на подтверждение технических навыков"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "День карьеры",
+      "date": "05.09.2023",
+      "location": "Москва",
+      "description": "Участие в мероприятии для демонстрации навыков",
+      "status": "Участвовал"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "name": "Хакатон 2023",
+      "date": "10.10.2023",
+      "location": "Санкт-Петербург",
+      "description": "Командное соревнование по разработке приложений",
+      "status": "Победитель"
     }
   ]
 }

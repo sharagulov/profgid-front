@@ -3,7 +3,7 @@
     <img :src="imgUrl" class="achievement-image" alt="achievement" />
 
     <transition name="fade">
-      <div v-if="showTooltip" class="popup">
+      <div v-if="showBlock" class="popup">
         <div class="content">
           <div class="header">
             <b>{{ name }}</b>
@@ -41,15 +41,15 @@ export default {
   },
   data() {
     return {
-      showTooltip: false
+      showBlock: false
     }
   },
   methods: {
     show() {
-      this.showTooltip = true
+      this.showBlock = true
     },
     hide() {
-      this.showTooltip = false
+      this.showBlock = false
     }
   }
 }
@@ -86,6 +86,7 @@ export default {
   flex-direction: column;
   align-items: center;
   width: fit-content;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .content {
