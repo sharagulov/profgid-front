@@ -8,8 +8,14 @@
 
 <script>
 import AppHeader from '@/components/layout/AppHeader.vue'
+import { useAuthStore } from '@/stores/auth.js'
 
 export default {
-  components: { AppHeader }
+  name: 'App',
+  components: { AppHeader },
+  created() {
+    const authStore = useAuthStore()
+    authStore.loadTokensFromStorage()
+  }
 }
 </script>

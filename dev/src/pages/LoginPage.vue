@@ -1,15 +1,16 @@
 <template>
   <div class="login-page">
     <main>
-      <span class="hc">Авторизация</span>
+      <span class="t30">Авторизация</span>
       <form class="login-form" @submit.prevent="handleLogin">
         
         <!-- Поле Логин -->
         <InputComponent
-          id="login"
+          id="email"
           label="Логин"
-          placeholder="Введите логин"
-          v-model="login"
+          type="email"
+          placeholder="Введите логин или почту"
+          v-model="email"
         />
         <!-- Поле Пароль -->
         <InputComponent
@@ -38,12 +39,13 @@
 <script>
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import InputComponent from '@/components/InputComponent.vue'
+import { useAuthStore } from '@/stores/auth.js'
 
 export default {
   components: { InputComponent, ButtonComponent },
   data () {
     return {
-      login: '', // Значение для поля логин
+      email: '', // Значение для поля емейл
       password: '', // Значение для поля пароль
       errorMessage: '' // Сообщение об ошибке
     }
@@ -51,31 +53,14 @@ export default {
   methods: {
     async handleLogin () {
       this.errorMessage = '' // Сбрасываем старое сообщение об ошибке
+      const authStore = useAuthStore()
 
       try {
-        // Отправка данных на сервер
-        const response = await fetch('https://example.com/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            login: this.login,
-            password: this.password
-          })
-        })
-
-        const result = await response.json()
-
-        if (!response.ok) {
-          throw new Error(result.message || 'Неверный логин или пароль')
-        }
-
-        // Обработка успешного входа (можно сделать редирект или сохранить токен)
-        alert('Успешный вход!')
-        this.$router.push('/') // Переход на главную страницу
-      } catch (error) {
-        // Обработка ошибки и вывод сообщения
-        this.errorMessage = error.message
-        alert('Система авторизации находится в разработке.')
+        await authStore.login(this.email, this.password)
+        // Успешный вход
+        this.$router.push('/carrer') // или на любую защищенную страницу
+      } catch (err) {
+        this.errorMessage = err.message || 'Ошибка при входе'
       }
     }
   }

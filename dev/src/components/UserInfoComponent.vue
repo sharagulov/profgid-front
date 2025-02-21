@@ -1,12 +1,12 @@
 <template>
   <div v-if="user" class="vertical-flex">
     <img class="avatar" :src="user.avatar" alt="LOGO_RED">
-    <span class="t14">{{user.name}}</span>
+    <span class="t14">{{user.user.full_name}}</span>
     <div class="info-list">
       <div class="info-list-item" style="font-weight: bold;">
         <span>Должность</span>
         <div class="dotted-line"></div>
-        <span>{{user.position}}</span>
+        <span>{{user.user.role}}</span>
       </div>
       <div class="info-list-item">
         <span>Разряд</span>
@@ -31,9 +31,13 @@
       </div>
     </div>
   </div>
+  <div v-else><span></span></div>
 </template>
 
 <script>
+
+import { useAuthStore } from '@/stores/auth'
+import { computed } from 'vue'
 
 export default {
   name: 'UserInfoComponent',
@@ -44,23 +48,15 @@ export default {
       default: 0,
     }
   },
-  data() {
+  setup() {
+    const authStore = useAuthStore()
+
     return {
-      user: null,
-    }
-  },
-  mounted() {
-    this.fetchUserInfo()
-  },
-  methods: {
-    async fetchUserInfo() {
-      try {
-        const response = await fetch(`http://localhost:3000/users/${this.currentUserId}`)
-        this.user = await response.json()
-      } catch (error) {
-        console.error('Ошибка при загрузке достижений:', error)
+      user: computed(() => authStore.user), // Получаем пользователя из store
+      formatDate(date) {
+        return date ? new Date(date).toLocaleString() : "Нет данных"
       }
-    },
+    }
   }
 }
 </script>
@@ -94,11 +90,10 @@ export default {
   }
   
   .dotted-line {
-    flex-grow: 1; 
+    flex-grow: 1;
+    background-color: $lowest-gray;
     height: 1px;
-    background-image: radial-gradient(circle, $low-gray 5px, transparent 5px);
-    background-size: 5px 5px; 
-    margin: 0 10px; 
+    margin: 0 10px;
   }
 
   .avatar {

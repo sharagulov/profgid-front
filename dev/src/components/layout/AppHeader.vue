@@ -5,7 +5,7 @@
         <div class="header-buttons">
           <img src="@/assets/LOGO_RED.png" alt="LOGO_RED">
           <router-link to="/carrer"><ButtonComponent variant="ghost">Карьера</ButtonComponent></router-link>
-          <ButtonComponent variant="ghost">Обучение</ButtonComponent>
+          <router-link to="/learning"><ButtonComponent variant="ghost">Обучение</ButtonComponent></router-link>
           <ButtonComponent variant="ghost">Библиотека</ButtonComponent>
           <ButtonComponent variant="ghost">О нас</ButtonComponent>
         </div>

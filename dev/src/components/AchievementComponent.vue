@@ -37,6 +37,7 @@ export default {
       try {
         const response = await fetch(`http://localhost:3000/achievements?userId=${this.currentUserId}`)
         this.achievements = await response.json()
+        console.log("Ачивки", this.achievements)
       } catch (error) {
         console.error('Ошибка при загрузке достижений:', error)
       }

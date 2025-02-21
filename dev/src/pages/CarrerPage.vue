@@ -94,6 +94,7 @@ import Toggler from '@/components/Toggler.vue'
 
 
 export default {
+  
   components: { BlockComponent, AchievementComponent, TooltipComponent, UserInfoComponent, UserStatisticsComponent, AttestationComponent, Toggler },
 
   data() {
@@ -117,25 +118,27 @@ export default {
     display: flex;
     gap: 50px;
     justify-content: center;
-
+    
     @media (max-width: 1450px) {
       flex-direction: column;
       align-items: center;
+      padding-inline: 300px;
     }
-
+    
     @media (max-width: 1000px) {
-      padding-inline: 60px;
+      padding-inline: 20px;
     }
   }
-
+  
   .left-section {
     display: flex;
     width: 335px;
     flex-direction: column;
     gap: 14px;
+    max-width: 400px;
 
     @media (max-width: 1450px) {
-      width: 60%;
+      width: 100%;
     }
 
     @media (max-width: 1000px) {
@@ -151,6 +154,7 @@ export default {
     @media (max-width: 1450px) {
       width: 100%;
       align-items: center;
+      max-width: 400px;
     }
   }
     
@@ -189,13 +193,18 @@ export default {
 
   .right-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 30px;
     width: 100%;
+
+    @media (max-width: 1450px) {
+      flex-direction: column;
+    }
   }
 
   .right-lower-section {
     display: flex;
+    flex-direction: column;
     gap: 30px;
 
     @media (max-width: 1450px) {
@@ -212,16 +221,13 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    min-width: 400px;
+    min-width: 350px;
     
     @media (max-width: 1450px) {
-      width: 60%;
-      min-width: 300px;
+      min-width: 0px;
     }
-    
-    @media (max-width: 1000px) {
-      width: 100%;
-      min-width: 200px;
+    @media (min-width: 1600px) {
+      min-width: 400px;
     }
   }
 
