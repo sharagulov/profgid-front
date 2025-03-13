@@ -3,18 +3,18 @@
     <main>
       <div class="left-section">
         <BlockComponent class="profile-block">
-          <UserInfoComponent :currentUserId="1"/>
+          <UserInfoComponent />
         </BlockComponent>  
 
-        <BlockComponent class="achievements-section">
+        <BlockComponent style="display: none" class="achievements-section">
           <div class="vertical-flex">
             <span class="t14">Достижения</span>
-            <AchievementComponent :currentUserId="1"/>
+            <AchievementComponent />
           </div>
         </BlockComponent>  
         
-        <BlockComponent class="statistics-section">
-            <UserStatisticsComponent :currentUserId="1"/>
+        <BlockComponent style="display: none" class="statistics-section">
+            <UserStatisticsComponent />
         </BlockComponent>  
       </div>
 
@@ -73,7 +73,7 @@
                 </div>
               </div>      
               <Toggler v-model="showAttestationsHistory" />
-              <AttestationComponent :currentUserId="1" :showAttestationsHistory="showAttestationsHistory"/>   
+              <AttestationComponent  :showAttestationsHistory="showAttestationsHistory"/>   
             </div> 
           </div>
         </div>

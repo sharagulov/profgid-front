@@ -8,6 +8,10 @@ import HrPage from '@/pages/HrPage.vue'
 const routes = [
   {
     path: '/',
+    redirect: '/carrer'
+  },
+  {
+    path: '/',
     name: 'LandingPage',
     component: LandingPage
   },
@@ -33,6 +37,7 @@ const routes = [
     component: HrPage
   },
 ]
+
 
 const router = createRouter({
   history: createWebHistory(),

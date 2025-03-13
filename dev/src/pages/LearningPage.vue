@@ -1,49 +1,44 @@
 <template>
-  <div class="career-page">
+  <div class="learning-page">
     <main>
       <div class="left-section">
-        
         <span class="t14 achievements-title">Обучение</span>
 
-        
-        <p class="section-title">Актуальные статьи</p>
-        <div class="articles-container">
-          <BlockComponent class="article-block">
-            <UserInfoComponent :currentUserId="1" />
-          </BlockComponent>
-          <BlockComponent class="article-block">
-            <UserInfoComponent :currentUserId="2" />
-          </BlockComponent>
-          <BlockComponent class="article-block">
-            <UserInfoComponent :currentUserId="3" />
-          </BlockComponent>
+        <div>
+          <p class="section-title">Актуальные статьи</p>
+          <div class="articles-container">
+            <ArticleComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
+            <ArticleComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
+            <ArticleComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
+            <ArticleComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
+          </div>
         </div>
 
-        
-        <p class="section-title">Актуальные тесты</p>
-        <div class="articles-container">
-          <BlockComponent class="article-block">
-            <UserInfoComponent :currentUserId="1" />
-          </BlockComponent>
-          <BlockComponent class="article-block">
-            <UserInfoComponent :currentUserId="2" />
-          </BlockComponent>
-          <BlockComponent class="article-block">
-            <UserInfoComponent :currentUserId="3" />
-          </BlockComponent>
+        <div>
+          <p class="section-title">Актуальные тесты</p>
+          <div class="articles-container">
+            <BlockComponent class="article-block">
+              <UserInfoComponent />
+            </BlockComponent>
+            <BlockComponent class="article-block">
+              <UserInfoComponent />
+            </BlockComponent>
+            <BlockComponent class="article-block">
+              <UserInfoComponent />
+            </BlockComponent>
+          </div>
         </div>
 
-        
         <p class="section-title">Недавнее посещение</p>
         <div class="articles-container">
           <BlockComponent class="article-block">
-            <UserInfoComponent :currentUserId="1" />
+            <UserInfoComponent />
           </BlockComponent>
           <BlockComponent class="article-block">
-            <UserInfoComponent :currentUserId="2" />
+            <UserInfoComponent />
           </BlockComponent>
           <BlockComponent class="article-block">
-            <UserInfoComponent :currentUserId="3" />
+            <UserInfoComponent />
           </BlockComponent>
         </div>
       </div>
@@ -54,73 +49,91 @@
 <script>
 import BlockComponent from "@/components/BlockComponent.vue";
 import UserInfoComponent from "@/components/UserInfoComponent.vue";
-import UserStatisticsComponent from "@/components/UserStatisticsComponent.vue";
+import ArticleComponent from "@/components/ArticleComponent.vue";
 
 export default {
   name: "TrainingPage",
   components: {
     BlockComponent,
     UserInfoComponent,
-    UserStatisticsComponent,
+    ArticleComponent,
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.career-page {
+.learning-page {
   padding-block: 130px;
   text-align: left;
 
+  main {
+    padding-inline: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-content: center;
+
+    @media (max-width: 1450px) {
+      padding-inline: 80px;
+    }
+
+    @media (max-width: 1000px) {
+      padding-inline: 20px;
+    }
+  }
+
   .left-section {
-    margin-left: 270px; /* Отступ от левого края */
-    margin-right: 270px; /* Отступ от правого края */
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
   }
 
   .achievements-title {
-    font-size: 30px; /* Увеличиваем размер шрифта */
-    font-weight: bold; /* Делаем текст жирным для акцента */
-    margin-bottom: 50px; /* Отступ от нижних элементов */
-    display: block; /* Гарантируем, что текст занимает всю ширину */
-    color: #000000; /* Цвет текста */
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #000;
   }
 
   .section-title {
-    font-size: 18px; /* Увеличенный размер шрифта */
-    font-weight: 400; /* Нормальная жирность */
-    margin-bottom: 30px; /* Отступ снизу */
-    color: #333; /* Серый цвет текста */
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #333;
   }
 
   .articles-container {
-    display: flex; /* Включаем Flexbox */
-    gap: 20px; /* Расстояние между блоками */
-    margin-bottom: 50px; /* Отступ снизу */
-    overflow-x: auto; /* Добавляем горизонтальный скроллинг, если блоки не помещаются */
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; // Центрируем, если карточек меньше 3
 
-  .article-block {
-    flex: 0 0 calc(33.33% - 20px); /* Блок занимает 1/3 ширины контейнера */
-    max-width: calc(33.33% - 20px);
-    min-width: 300px; /* Минимальная ширина блока */
-    border: 1px solid #ddd; /* Обрамление блока */
-    border-radius: 20px; /* Закругляем углы */
-    overflow: hidden; /* Убираем выходящие за края элементы */
-    padding: 20px; /* Внутренние отступы */
+  .article {
+    flex: 1 1 calc(33.33% - 20px); // 3 в ряд, учитывая gap
+    max-width: 500px;
+    min-width: 370px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 55px;
-    
   }
 
-  .profile-block {
-    font-size: 18px;
-    font-weight: 400;
-    margin-bottom: 140px;
-    color: #333;
-    margin-right: 300px;
-    border-radius: 20px; /* Закругляем углы для блоков профиля */
-    overflow: hidden;
+  @media (max-width: 1200px) {
+    .article {
+      flex: 1 1 calc(50% - 20px); // 2 в ряд на средних экранах
+    }
   }
+
+  @media (max-width: 768px) {
+    .article {
+      flex: 1 1 100%; // На маленьких экранах в 1 ряд
+      max-width: none;
+    }
+  }
+}
+
 }
 </style>

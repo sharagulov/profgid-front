@@ -60,7 +60,7 @@ export default {
         // Успешный вход
         this.$router.push('/carrer') // или на любую защищенную страницу
       } catch (err) {
-        this.errorMessage = err.message || 'Ошибка при входе'
+        this.errorMessage = 'Ошибка при авторизации'
       }
     }
   }

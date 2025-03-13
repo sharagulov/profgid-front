@@ -9,7 +9,15 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   getters: {
-    isAuthenticated: (state) => !!state.accessToken,
+    isAuthenticated: (state) => {
+      if (!state.accessToken) return false
+      if (!state.expiresAt) return false
+      
+      const now = new Date()
+      const tokenExp = new Date(state.expiresAt)
+
+      return now < tokenExp
+    },
     getUser: (state) => state.user
   },
 

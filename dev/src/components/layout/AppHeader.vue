@@ -7,13 +7,19 @@
           <router-link to="/carrer"><ButtonComponent variant="ghost">Карьера</ButtonComponent></router-link>
           <router-link to="/learning"><ButtonComponent variant="ghost">Обучение</ButtonComponent></router-link>
           <ButtonComponent variant="ghost">Библиотека</ButtonComponent>
-          <ButtonComponent variant="ghost">О нас</ButtonComponent>
+          <ButtonComponent variant="ghost"><a href="https://www.lemax.ru/"> О нас </a></ButtonComponent>
         </div>
         <div class="header-buttons-2">
-          <router-link to="/login"><ButtonComponent variant="ghost">Войти</ButtonComponent></router-link>
+          <!-- Если не авторизован, показываем кнопку "Войти" -->
+          <router-link v-if="!isAuthenticated" to="/login">
+            <ButtonComponent variant="ghost">Войти</ButtonComponent>
+          </router-link>
+          <!-- Если авторизован, показываем "Выйти" -->
+          <router-link v-else to="/login"><ButtonComponent @click="logout" variant="ghost">Выйти</ButtonComponent></router-link>
         </div>
       </div>
     </header>
+
     <div class="mobile-header">
       <div class="mobile-header-container">
         <div class="burger-button mobile-header-item" @click.stop="toggleMenu">
@@ -23,50 +29,52 @@
           <router-link to="/login"><ButtonComponent variant="ghost">Вход</ButtonComponent></router-link>
         </div>
       </div>
-      <div class="menu-container" :class="{'menu-container-open': isMenuOpen}">
+      <div class="menu-container" :class="{ 'menu-container-open': isMenuOpen }">
         <div class="menu">
-          <ButtonComponent variant="filler">Карьера</ButtonComponent>
-          <ButtonComponent variant="filler">Обучение</ButtonComponent>
+          <router-link to="/carrer"><ButtonComponent variant="filler">Карьера</ButtonComponent></router-link>
+          <router-link to="/learning"><ButtonComponent variant="filler">Обучение</ButtonComponent></router-link>
           <ButtonComponent variant="filler">Библиотека</ButtonComponent>
-          <ButtonComponent variant="filler">О нас</ButtonComponent>
+          <ButtonComponent variant="filler"><a href="https://www.lemax.ru/"> О нас </a></ButtonComponent>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
+import { useAuthStore } from '@/stores/auth'
 
-export default {
-  name: 'AppHeader',
-  components: { ButtonComponent },
-  data () {
-    return {
-      isMenuOpen: false // Состояние меню (открыто/закрыто)
-    }
-  },
-  methods: {
-    toggleMenu () {
-      this.isMenuOpen = !this.isMenuOpen // Переключение состояния
-    },
-    closeMenu (event) {
-      // Проверяем, кликнули ли вне меню
-      const menu = this.$el.querySelector('.menu-container')
-      if (menu && !menu.contains(event.target)) {
-        this.isMenuOpen = false // Закрыть меню
-      }
-    }
-  },
-  mounted () {
-    // Добавляем слушатель кликов на весь документ
-    document.addEventListener('click', this.closeMenu)
-  },
-  beforeUnmount () {
-    // Убираем слушатель кликов при уничтожении компонента
-    document.removeEventListener('click', this.closeMenu)
+const authStore = useAuthStore()
+const isAuthenticated = computed(() => authStore.isAuthenticated)
+const logout = () => {
+  authStore.logout();
+  }
+
+// Состояние меню
+const isMenuOpen = ref(false)
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+const closeMenu = (event) => {
+  const menu = document.querySelector('.menu-container')
+  if (menu && !menu.contains(event.target)) {
+    isMenuOpen.value = false
   }
 }
+
+// Добавляем обработчик кликов при монтировании
+onMounted(() => {
+  document.addEventListener('click', closeMenu)
+})
+
+// Убираем обработчик кликов перед удалением компонента
+onBeforeUnmount(() => {
+  document.removeEventListener('click', closeMenu)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -136,7 +144,7 @@ export default {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     left: 30px;
     top: 60px;
-    width:fit-content;
+    width: fit-content;
     border-radius: 10px;
   }
 
@@ -153,7 +161,6 @@ export default {
     display: none;
     z-index: -10;
   }
-
 }
 
 .burger-button {
