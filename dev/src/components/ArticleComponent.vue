@@ -1,5 +1,5 @@
 <template>
-  <div class="frame" @click="onFrameClick">
+  <div class="frame" @click="$emit('click')">
     <div class="frame-content">
       <div class="frame-text">
         <div class="frame-number">{{ number }}</div>

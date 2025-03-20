@@ -7,61 +7,64 @@
         <div>
           <p class="section-title">Актуальные статьи</p>
           <div class="articles-container">
-            <ArticleComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
-            <ArticleComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
-            <ArticleComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
-            <ArticleComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
+            <ArticleComponent
+              v-for="article in articles"
+              :key="article.id"
+              class="article"
+              :number="'0' + article.id + '.'"
+              :title="article.name"
+              :description="article.desc"
+              imageSrc="/avatars/avatar3.gif"
+              @click="openArticle(article.id)"
+            />
           </div>
         </div>
 
         <div>
           <p class="section-title">Актуальные тесты</p>
           <div class="articles-container">
-            <BlockComponent class="article-block">
-              <UserInfoComponent />
-            </BlockComponent>
-            <BlockComponent class="article-block">
-              <UserInfoComponent />
-            </BlockComponent>
-            <BlockComponent class="article-block">
-              <UserInfoComponent />
-            </BlockComponent>
+            <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
+            <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
+            <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
+            <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
           </div>
-        </div>
-
-        <p class="section-title">Недавнее посещение</p>
-        <div class="articles-container">
-          <BlockComponent class="article-block">
-            <UserInfoComponent />
-          </BlockComponent>
-          <BlockComponent class="article-block">
-            <UserInfoComponent />
-          </BlockComponent>
-          <BlockComponent class="article-block">
-            <UserInfoComponent />
-          </BlockComponent>
         </div>
       </div>
     </main>
   </div>
 </template>
 
-<script>
-import BlockComponent from "@/components/BlockComponent.vue";
-import UserInfoComponent from "@/components/UserInfoComponent.vue";
-import ArticleComponent from "@/components/ArticleComponent.vue";
+<script setup>
+  import { ref, onMounted } from 'vue'
+  import { useRouter } from 'vue-router';
+  import BlockComponent from "@/components/BlockComponent.vue";
+  import UserInfoComponent from "@/components/UserInfoComponent.vue";
+  import ArticleComponent from "@/components/ArticleComponent.vue";
+  import TestComponent from "@/components/TestComponent.vue";
 
-export default {
-  name: "TrainingPage",
-  components: {
-    BlockComponent,
-    UserInfoComponent,
-    ArticleComponent,
-  },
-};
+  const articles = ref([])
+
+  const fetchArticles = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/articles`)
+      articles.value = await response.json()
+    } catch (error) {
+      console.error('Ошибка при загрузке достижений:', error)
+    }
+  }
+
+  onMounted(fetchArticles)
+
+  
+  const router = useRouter();
+  const openArticle = (id) => {
+    router.push(`/learning/article/${id}`);
+  }
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .learning-page {
   padding-block: 130px;
   text-align: left;
@@ -93,14 +96,13 @@ export default {
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 30px;
-    color: #000;
+    text-align: center;
   }
 
   .section-title {
     font-size: 18px;
     font-weight: 400;
     margin-bottom: 20px;
-    color: #333;
   }
 
   .articles-container {

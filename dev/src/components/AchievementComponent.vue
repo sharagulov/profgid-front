@@ -11,42 +11,31 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
 import AchievementItem from '@/components/AchievementItem.vue'
 
-export default {
-  name: 'AchievementComponent',
-  components: { AchievementItem },
-  props: {
-    currentUserId: {
-      type: Number,
-      required: false,
-      default: 0,
-    }
-  },
-  data() {
-    return {
-      achievements: [],
-    }
-  },
-  mounted() {
-    this.fetchAchievements()
-  },
-  methods: {
-    async fetchAchievements() {
-      try {
-        const response = await fetch(`http://localhost:3000/achievements?userId=${this.currentUserId}`)
-        this.achievements = await response.json()
-        console.log("Ачивки", this.achievements)
-      } catch (error) {
-        console.error('Ошибка при загрузке достижений:', error)
-      }
-    },
-    getImageUrl(path) {
-      return new URL(path, import.meta.url).href
-    }
+const props = defineProps({
+  currentUserId: {
+    type: Number,
+    required: false,
+    default: 1,
+  }
+})
+
+const achievements = ref([])
+
+const fetchAchievements = async () => {
+  try {
+    const response = await fetch(`http://localhost:3000/achievements?userId=${props.currentUserId}`)
+    achievements.value = await response.json()
+    console.log("Ачивки", achievements.value)
+  } catch (error) {
+    console.error('Ошибка при загрузке достижений:', error)
   }
 }
+
+onMounted(fetchAchievements)
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,5 @@
 <template>
-  <div class="achievement-item" @mouseenter="show" @mouseleave="hide">
+  <div class="achievement-item" @mouseenter="showBlock = true" @mouseleave="showBlock = false">
     <img :src="imgUrl" class="achievement-image" alt="achievement" />
 
     <transition name="fade">
@@ -16,48 +16,35 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AchievementItem',
-  props: {
-    imgUrl: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    date: {
-      type: String,
-      required: false,
-      default: ''
-    },
-    desc: {
-      type: String,
-      required: false,
-      default: ''
-    }
+<script setup>
+import { ref } from 'vue'
+
+defineProps({
+  imgUrl: {
+    type: String,
+    required: true
   },
-  data() {
-    return {
-      showBlock: false
-    }
+  name: {
+    type: String,
+    required: true
   },
-  methods: {
-    show() {
-      this.showBlock = true
-    },
-    hide() {
-      this.showBlock = false
-    }
+  date: {
+    type: String,
+    required: false,
+    default: ''
+  },
+  desc: {
+    type: String,
+    required: false,
+    default: ''
   }
-}
+})
+
+const showBlock = ref(false)
 </script>
 
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
-
 
 .fade-enter-active,
 .fade-leave-active {

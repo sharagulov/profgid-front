@@ -3,17 +3,17 @@
     <main>
       <div class="left-section">
         <BlockComponent class="profile-block">
-          <UserInfoComponent />
+          <UserInfoComponent :user="user" />
         </BlockComponent>  
 
-        <BlockComponent style="display: none" class="achievements-section">
+        <BlockComponent class="achievements-section">
           <div class="vertical-flex">
             <span class="t14">Достижения</span>
             <AchievementComponent />
           </div>
         </BlockComponent>  
         
-        <BlockComponent style="display: none" class="statistics-section">
+        <BlockComponent class="statistics-section">
             <UserStatisticsComponent />
         </BlockComponent>  
       </div>
@@ -24,11 +24,11 @@
         <div class="right-content">
           <div class="description-list">
             <div class="description-list-item">
-              <span class="t14" >Ваш карьерный путь</span>
+              <span class="t14">Ваш карьерный путь</span>
               <div style="align-content: center;">
                 <img src="@/assets/INFO.png" alt="INFO">
                 <TooltipComponent>
-                  <span>Здесь будет отображаться ваша карьера, а так же, кем вы можете стать </span>
+                  <span>Здесь будет отображаться ваша карьера, а также, кем вы можете стать</span>
                 </TooltipComponent>
               </div>
             </div>
@@ -42,25 +42,16 @@
           <div class="right-lower-section">
             <div class="description-list lower-description-list">
               <div class="description-list-item">
-                <span class="t14" >Мои мероприятия</span>
+                <span class="t14">Мои мероприятия</span>
                 <div style="align-content: center;">
-                <img src="@/assets/INFO.png" alt="INFO">
-                <TooltipComponent>
-                  <span>Мероприятия, которые вам сейчас доступны</span>
-                </TooltipComponent>
-              </div>
+                  <img src="@/assets/INFO.png" alt="INFO">
+                  <TooltipComponent>
+                    <span>Мероприятия, которые вам сейчас доступны</span>
+                  </TooltipComponent>
+                </div>
               </div>
               <span>Галочку с текстом</span>
-              <BlockComponent variant="grey" class="event-section lower-block">
-                <div class="vertical-flex">
-                  <span>Мероприятие</span>
-                </div>
-              </BlockComponent>  
-              <BlockComponent variant="grey" class="event-section lower-block">
-                <div class="vertical-flex">
-                  <span>Мероприятие</span>
-                </div>
-              </BlockComponent>  
+              <EventComponent /> 
             </div>
             <div class="description-list lower-description-list">
               <div class="description-list-item">
@@ -73,34 +64,72 @@
                 </div>
               </div>      
               <Toggler v-model="showAttestationsHistory" />
-              <AttestationComponent  :showAttestationsHistory="showAttestationsHistory"/>   
+              <AttestationComponent />   
             </div> 
           </div>
         </div>
       </div>
-
     </main>
   </div>
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
 import TooltipComponent from '@/components/TooltipComponent.vue'
 import AchievementComponent from '@/components/AchievementComponent.vue'
 import BlockComponent from '@/components/BlockComponent.vue'
 import UserInfoComponent from '@/components/UserInfoComponent.vue'
 import UserStatisticsComponent from '@/components/UserStatisticsComponent.vue'
 import AttestationComponent from '@/components/AttestationComponent.vue'
+import EventComponent from '@/components/EventComponent.vue'
+import EventItem from '@/components/EventItem.vue'
 import Toggler from '@/components/Toggler.vue'
 
-
 export default {
-  
-  components: { BlockComponent, AchievementComponent, TooltipComponent, UserInfoComponent, UserStatisticsComponent, AttestationComponent, Toggler },
+  components: { 
+    BlockComponent, 
+    AchievementComponent, 
+    TooltipComponent, 
+    UserInfoComponent, 
+    UserStatisticsComponent, 
+    AttestationComponent, 
+    Toggler, 
+    EventComponent, 
+    EventItem 
+  },
 
-  data() {
-    return {
-      showAttestationsHistory: false // Начальное состояние чекбокса (скрыто)
-    };
+  setup() {
+    const user = ref(null)
+    const showAttestationsHistory = ref(false)
+
+    const fetchUser = async () => {
+      try {
+        const accessToken = localStorage.getItem('access_token')
+        if (!accessToken) return
+
+        const response = await fetch('http://profguide.leganyst.ru:61180/users/me', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          }
+        })
+
+        const data = await response.json()
+        if (!response.ok) throw new Error(data.message || 'Ошибка при загрузке пользователя')
+
+        user.value = data
+      } catch (error) {
+        console.error('Ошибка загрузки пользователя:', error.message)
+      }
+    }
+
+    onMounted(fetchUser)
+
+    return { 
+      user,
+      showAttestationsHistory
+    }
   }
 }
 </script>
@@ -112,9 +141,8 @@ export default {
   padding-block: 130px;
   text-align: left;
 
-
   main {
-    padding-inline: 160px;
+    padding-inline: 50px;
     display: flex;
     gap: 50px;
     justify-content: center;
@@ -122,7 +150,7 @@ export default {
     @media (max-width: 1450px) {
       flex-direction: column;
       align-items: center;
-      padding-inline: 300px;
+      padding-inline: 200px;
     }
     
     @media (max-width: 1000px) {
@@ -132,10 +160,9 @@ export default {
   
   .left-section {
     display: flex;
-    width: 335px;
+    width: 400px;
     flex-direction: column;
     gap: 14px;
-    max-width: 400px;
 
     @media (max-width: 1450px) {
       width: 100%;
@@ -150,11 +177,10 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 50px;
+    width: 100%;
     
     @media (max-width: 1450px) {
-      width: 100%;
       align-items: center;
-      max-width: 400px;
     }
   }
     
@@ -206,6 +232,7 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    width: 100%;
 
     @media (max-width: 1450px) {
       flex-direction: column;
@@ -222,12 +249,10 @@ export default {
     flex-direction: column;
     gap: 10px;
     min-width: 350px;
+    width: 100%;
     
     @media (max-width: 1450px) {
       min-width: 0px;
-    }
-    @media (min-width: 1600px) {
-      min-width: 400px;
     }
   }
 
@@ -238,8 +263,8 @@ export default {
   }
     
   .lower-description-list {
-    width: 50%;
-    box-sizing: border-box; /* Указываем отступы и границы в размер элемента */
+    width: 100%;
+    box-sizing: border-box; 
 
     @media (max-width: 1450px) {
       width: 100%;

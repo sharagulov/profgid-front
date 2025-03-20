@@ -3,7 +3,6 @@
     <main>
       <span class="t30">Авторизация</span>
       <form class="login-form" @submit.prevent="handleLogin">
-        
         <!-- Поле Логин -->
         <InputComponent
           id="email"
@@ -39,26 +38,40 @@
 <script>
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import InputComponent from '@/components/InputComponent.vue'
-import { useAuthStore } from '@/stores/auth.js'
 
 export default {
   components: { InputComponent, ButtonComponent },
-  data () {
+  data() {
     return {
-      email: '', // Значение для поля емейл
-      password: '', // Значение для поля пароль
-      errorMessage: '' // Сообщение об ошибке
+      email: '',
+      password: '',
+      errorMessage: ''
     }
   },
   methods: {
-    async handleLogin () {
+    async handleLogin() {
       this.errorMessage = '' // Сбрасываем старое сообщение об ошибке
-      const authStore = useAuthStore()
 
       try {
-        await authStore.login(this.email, this.password)
-        // Успешный вход
-        this.$router.push('/carrer') // или на любую защищенную страницу
+        const response = await fetch('http://profguide.leganyst.ru:61180/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: this.email, password: this.password })
+        })
+
+        const data = await response.json()
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Ошибка при логине')
+        }
+
+        // Сохраняем токены в localStorage
+        localStorage.setItem('access_token', data.access_token)
+        localStorage.setItem('refresh_token', data.refresh_token)
+        localStorage.setItem('expires_at', data.expires_at)
+
+        // Перенаправляем пользователя
+        this.$router.push('/carrer')
       } catch (err) {
         this.errorMessage = 'Ошибка при авторизации'
       }
@@ -74,7 +87,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Центрирование по высоте экрана */
+  height: 100vh;
   background-color: #fff;
 
   main {

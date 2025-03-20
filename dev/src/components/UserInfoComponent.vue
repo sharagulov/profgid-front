@@ -1,19 +1,19 @@
 <template>
   <div v-if="user" class="vertical-flex">
     <img class="avatar" :src="user.avatar || 'AVATAR.png'" alt="LOGO_RED">
-    <span class="t14">{{ user.user.full_name }}</span>
+    <span class="t14">{{ user?.user?.full_name }}</span>
 
     <div class="info-list">
       <div class="info-list-item" style="font-weight: bold;">
         <span>Должность</span>
         <div class="dotted-line"></div>
-        <span>{{ user.employee.current_position_id }}</span>
+        <span>{{ user?.employee?.current_position_id }}</span>
       </div>
 
       <div class="info-list-item">
         <span>Разряд</span>
         <div class="dotted-line"></div>
-        <span>{{ user.employee.current_position_id }}</span>
+        <span>{{ user?.employee?.current_position_id }}</span>
       </div>
 
       <br>
@@ -45,27 +45,25 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useAuthStore } from '@/stores/auth'
 import { formatDate, formatExperience } from '@/utils/utils.js'
 
-const authStore = useAuthStore()
-
-const user = computed(() => authStore.user)
+const props = defineProps({
+  user: Object
+})
 
 const companyStartFormatted = computed(() => {
-  return user.value?.employee?.company_start ? formatDate(user.value.employee.company_start) : ''
+  return props.user?.employee?.company_start ? formatDate(props.user.employee.company_start) : ''
 })
 
 const companyExperienceFormatted = computed(() => {
-  return user.value?.employee?.overall_experience ? formatExperience(user.value.employee.overall_experience) : ''
+  return props.user?.employee?.overall_experience ? formatExperience(props.user.employee.overall_experience) : ''
 })
 
 const lastPromotionFormatted = computed(() => {
-  return user.value?.employee?.last_promotion ? formatDate(user.value.employee.last_promotion) : ''
+  return props.user?.employee?.last_promotion ? formatDate(props.user.employee.last_promotion) : ''
 })
-
-console.log(user)
 </script>
+
 
 <style scoped lang="scss">
 @import '@/styles/variables.scss';

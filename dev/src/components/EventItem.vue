@@ -1,11 +1,11 @@
 <template>
-  <BlockComponent class="attestation" :variant="'grey'">
-    <div class="attestation-content">
-      <div class="attestation-info">
-        <span class="attestation-title">{{ attestation.name }}</span>
-        <span class="attestation-date">{{ formattedDate }}</span>
+  <BlockComponent class="event" :variant="'grey'">
+    <div class="event-content">
+      <div class="event-info">
+        <span class="event-title">{{ event.name }}</span>
+        <span class="event-date">{{ formattedDate }}</span>
       </div>
-      <div class="attestation-description">{{ attestation.desc }}</div>
+      <div class="event-description">{{ event.description }}</div>
     </div>
   </BlockComponent>
 </template>
@@ -14,21 +14,21 @@
 import BlockComponent from '@/components/BlockComponent.vue'
 
 export default {
-  name: 'AttestationItem',
+  name: 'EventItem',
   components: {
     BlockComponent
   },
   props: {
-    attestation: Object // Пропс, который передает данные аттестации
+    event: Object // Пропс, который передает данные события
   },
   computed: {
     // Сравнение и форматирование даты
     formattedDate() {
-      const attestationDate = new Date(this.attestation.date);
+      const eventDate = new Date(this.event.date);
       const currentDate = new Date();
 
       // Если дата прошла
-      if (attestationDate < currentDate) {
+      if (eventDate < currentDate) {
         return "Просрочено";
       }
 
@@ -40,7 +40,7 @@ export default {
         month: '2-digit', 
         year: 'numeric' 
       };
-      return attestationDate.toLocaleString('ru-RU', options);
+      return eventDate.toLocaleString('ru-RU', options);
     }
   }
 }
@@ -49,27 +49,27 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
 
-.attestation {
+.event {
   width: 100%;
 }
 
-.attestation-content {
+.event-content {
   display: flex;
   flex-direction: column;
 }
 
-.attestation-info {
+.event-info {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.attestation-date {
+.event-date {
   font-size: 10px;
   color: $main-red;
 }
 
-.attestation-description {
+.event-description {
   margin-top: 10px;
   font-size: 12px;
   color: #555;
