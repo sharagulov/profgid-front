@@ -5,23 +5,25 @@
   </label>
 </template>
 
-<script>
-export default {
-  props: {
-    modelValue: Boolean
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+  modelValue: Boolean
+})
+
+const emit = defineEmits()
+
+const checked = computed({
+  get() {
+    return props.modelValue
   },
-  computed: {
-    checked: {
-      get() {
-        return this.modelValue;
-      },
-      set(value) {
-        this.$emit('update:modelValue', value);
-      }
-    }
+  set(value) {
+    emit('update:modelValue', value)
   }
-}
+})
 </script>
+
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';

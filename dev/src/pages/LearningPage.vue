@@ -14,13 +14,13 @@
               :number="'0' + article.id + '.'"
               :title="article.name"
               :description="article.desc"
-              imageSrc="/avatars/avatar3.gif"
+              :imageSrc="article.imageSrc"
               @click="openArticle(article.id)"
             />
           </div>
         </div>
 
-        <div>
+        <!-- <div>
           <p class="section-title">Актуальные тесты</p>
           <div class="articles-container">
             <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
@@ -28,7 +28,7 @@
             <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
             <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
           </div>
-        </div>
+        </div> -->
       </div>
     </main>
   </div>
@@ -37,23 +37,23 @@
 <script setup>
   import { ref, onMounted } from 'vue'
   import { useRouter } from 'vue-router';
-  import BlockComponent from "@/components/BlockComponent.vue";
-  import UserInfoComponent from "@/components/UserInfoComponent.vue";
   import ArticleComponent from "@/components/ArticleComponent.vue";
   import TestComponent from "@/components/TestComponent.vue";
 
-  const articles = ref([])
+  import data from '@/fake_db/db.json'
 
-  const fetchArticles = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/articles`)
-      articles.value = await response.json()
-    } catch (error) {
-      console.error('Ошибка при загрузке достижений:', error)
-    }
-  }
+  const articles = ref(data.articles)
 
-  onMounted(fetchArticles)
+  // const fetchArticles = async () => {
+  //   try {
+  //     const response = await fetch(`http://localhost:3000/articles`)
+  //     articles.value = await response.json()
+  //   } catch (error) {
+  //     console.error('Ошибка при загрузке достижений:', error)
+  //   }
+  // }
+
+  // onMounted(fetchArticles)
 
   
   const router = useRouter();

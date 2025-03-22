@@ -20,31 +20,30 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "TrainingCard",
-  props: {
-    number: { type: String, required: true },
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    imageSrc: { type: String, required: true },
-    status: { type: String, default: "not-completed" }
-  },
-  computed: {
-    statusClass() {
-      return this.status === "completed" ? "status-green" : "status-orange";
-    },
-    statusText() {
-      return this.status === "completed" ? "Завершен" : "Не завершен";
-    }
-  },
-  methods: {
-    onCardClick() {
-      console.log(`Открыт курс: ${this.title}`);
-    }
-  }
-};
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+  number: { type: String, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  imageSrc: { type: String, required: true },
+  status: { type: String, default: 'not-completed' }
+})
+
+const statusClass = computed(() => {
+  return props.status === 'completed' ? 'status-green' : 'status-orange'
+})
+
+const statusText = computed(() => {
+  return props.status === 'completed' ? 'Завершен' : 'Не завершен'
+})
+
+const onCardClick = () => {
+  console.log(`Открыт курс: ${props.title}`)
+}
 </script>
+
 
 <style scoped lang="scss">
 @import '@/styles/variables.scss';

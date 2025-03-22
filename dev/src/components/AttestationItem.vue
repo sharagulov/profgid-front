@@ -10,41 +10,35 @@
   </BlockComponent>
 </template>
 
-<script>
+<script setup>
+import { defineProps, computed } from 'vue'
 import BlockComponent from '@/components/BlockComponent.vue'
 
-export default {
-  name: 'AttestationItem',
-  components: {
-    BlockComponent
-  },
-  props: {
-    attestation: Object // Пропс, который передает данные аттестации
-  },
-  computed: {
-    // Сравнение и форматирование даты
-    formattedDate() {
-      const attestationDate = new Date(this.attestation.date);
-      const currentDate = new Date();
+const props = defineProps({
+  attestation: Object // Пропс, который передает данные аттестации
+})
 
-      // Если дата прошла
-      if (attestationDate < currentDate) {
-        return "Просрочено";
-      }
+const formattedDate = computed(() => {
+  const attestationDate = new Date(props.attestation.date)
+  const currentDate = new Date()
 
-      // Если дата не прошла, форматируем дату в "день месяц год"
-      const options = { 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        day: '2-digit', 
-        month: '2-digit', 
-        year: 'numeric' 
-      };
-      return attestationDate.toLocaleString('ru-RU', options);
-    }
+  // Если дата прошла
+  if (attestationDate < currentDate) {
+    return "Просрочено"
   }
-}
+
+  // Если дата не прошла, форматируем дату в "день месяц год"
+  const options = { 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    day: '2-digit', 
+    month: '2-digit', 
+    year: 'numeric' 
+  }
+  return attestationDate.toLocaleString('ru-RU', options)
+})
 </script>
+
 
 <style scoped lang="scss">
 @import '@/styles/variables.scss';

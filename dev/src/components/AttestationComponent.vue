@@ -7,34 +7,29 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
 import AttestationItem from '@/components/AttestationItem.vue'
+import data from '@/fake_db/db.json'
 
-export default {
-  name: 'AttestationComponent',
-  components: { AttestationItem },
-  data() {
-    return {
-      attestations: [],
-      errorOccured: false,
-    }
-  },
-  mounted() {
-    this.fetchAttestations()
-  },
-  methods: {
-    async fetchAttestations() {
-      try {
-        const response = await fetch(`http://localhost:3000/attestations`);
-        this.attestations = await response.json();
-      } catch (error) {
-        this.errorOccured = true;
-        console.error('Ошибка при загрузке аттестаций:', error);
-      }
-    }
-  }
-}
+const attestations = ref(data.attestations)
+// const errorOccured = ref(false)
+
+// const fetchAttestations = async () => {
+//   try {
+//     const response = await fetch(`http://localhost:3000/attestations`)
+//     attestations.value = await response.json()
+//   } catch (error) {
+//     errorOccured.value = true
+//     console.error('Ошибка при загрузке аттестаций:', error)
+//   }
+// }
+
+// onMounted(fetchAttestations)
+
+
 </script>
+
 
 <style scoped lang="scss">
 .attestations-container {

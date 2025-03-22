@@ -10,41 +10,35 @@
   </BlockComponent>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
 import BlockComponent from '@/components/BlockComponent.vue'
 
-export default {
-  name: 'EventItem',
-  components: {
-    BlockComponent
-  },
-  props: {
-    event: Object // Пропс, который передает данные события
-  },
-  computed: {
-    // Сравнение и форматирование даты
-    formattedDate() {
-      const eventDate = new Date(this.event.date);
-      const currentDate = new Date();
+const props = defineProps({
+  event: Object // Пропс, который передает данные события
+})
 
-      // Если дата прошла
-      if (eventDate < currentDate) {
-        return "Просрочено";
-      }
+const formattedDate = computed(() => {
+  const eventDate = new Date(props.event.date)
+  const currentDate = new Date()
 
-      // Если дата не прошла, форматируем дату в "день месяц год"
-      const options = { 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        day: '2-digit', 
-        month: '2-digit', 
-        year: 'numeric' 
-      };
-      return eventDate.toLocaleString('ru-RU', options);
-    }
+  // Если дата прошла
+  if (eventDate < currentDate) {
+    return "Просрочено"
   }
-}
+
+  // Если дата не прошла, форматируем дату в "день месяц год"
+  const options = {
+    hour: '2-digit',
+    minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }
+  return eventDate.toLocaleString('ru-RU', options)
+})
 </script>
+
 
 <style scoped lang="scss">
 @import '@/styles/variables.scss';

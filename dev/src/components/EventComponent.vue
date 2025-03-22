@@ -7,34 +7,29 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
 import EventItem from '@/components/EventItem.vue'
+import data from '@/fake_db/db.json'
 
-export default {
-  name: 'EventComponent',
-  components: { EventItem },
-  data() {
-    return {
-      events: [],
-      errorOccured: false,
-    }
-  },
-  mounted() {
-    this.fetchEvents()
-  },
-  methods: {
-    async fetchEvents() {
-      try {
-        const response = await fetch(`http://localhost:3000/events`);
-        this.events = await response.json();
-      } catch (error) {
-        this.errorOccured = true;
-        console.error('Ошибка при загрузке событий:', error);
-      }
-    }
-  }
-}
+
+const events = ref(data.events)
+
+
+// const fetchEvents = async () => {
+//   try {
+//     const response = await fetch(`http://localhost:3000/events`)
+//     events.value = await response.json()
+//   } catch (error) {
+//     errorOccured.value = true
+//     console.error('Ошибка при загрузке событий:', error)
+//   }
+// }
+
+// onMounted(fetchEvents)
+
 </script>
+
 
 <style scoped lang="scss">
 .events-container {

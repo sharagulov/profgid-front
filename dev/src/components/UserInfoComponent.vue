@@ -1,7 +1,7 @@
 <template>
   <div v-if="user" class="vertical-flex">
     <img class="avatar" :src="user.avatar || 'AVATAR.png'" alt="LOGO_RED">
-    <span class="t14">{{ user?.user?.full_name }}</span>
+    <h2>{{ user?.user?.full_name }}</h2>
 
     <div class="info-list">
       <div class="info-list-item" style="font-weight: bold;">

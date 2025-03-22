@@ -14,34 +14,35 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'InputField',
-  props: {
-    label: {
-      type: String,
-      required: true
-    },
-    type: {
-      type: String,
-      default: 'text'
-    },
-    placeholder: {
-      type: String,
-      default: ''
-    },
-    id: {
-      type: String,
-      required: true
-    },
-    modelValue: {
-      type: String,
-      default: ''
-    }
+<script setup>
+import { defineProps, defineEmits } from 'vue'
+
+const props = defineProps({
+  label: {
+    type: String,
+    required: true
   },
-  emits: ['update:modelValue']
-}
+  type: {
+    type: String,
+    default: 'text'
+  },
+  placeholder: {
+    type: String,
+    default: ''
+  },
+  id: {
+    type: String,
+    required: true
+  },
+  modelValue: {
+    type: String,
+    default: ''
+  }
+})
+
+const emit = defineEmits(['update:modelValue'])
 </script>
+
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';

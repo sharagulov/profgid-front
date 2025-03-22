@@ -11,31 +11,31 @@
   </button>
 </template>
 
-<script>
-export default {
-  name: 'ButtonComponent',
-  props: {
-    type: {
-      type: String,
-      default: 'button'
-    },
-    variant: {
-      type: String,
-      default: 'default',
-      validator: value => ['default', 'ghost', 'filler'].includes(value)
-    }
+<script setup>
+import { defineProps, computed } from 'vue'
+
+const props = defineProps({
+  type: {
+    type: String,
+    default: 'button'
   },
-  computed: {
-    variantClass () {
-      return {
-        default: 'default-variant',
-        ghost: 'ghost-variant',
-        filler: 'filler-variant'
-      }[this.variant]
-    }
+  variant: {
+    type: String,
+    default: 'default',
+    validator: value => ['default', 'ghost', 'filler', 'grey'].includes(value)
   }
-}
+})
+
+const variantClass = computed(() => {
+  return {
+    default: 'default-variant',
+    ghost: 'ghost-variant',
+    filler: 'filler-variant',
+    grey: 'grey-variant'
+  }[props.variant]
+})
 </script>
+
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
@@ -82,6 +82,15 @@ export default {
     &:hover {
       background-color: $main-red;
       color: white;
+    }
+  }
+
+  &.grey-variant {
+    background-color: $lowest-gray;
+    padding: 7px 20px;
+
+    &:hover {
+      background-color: $low-gray;
     }
   }
 }

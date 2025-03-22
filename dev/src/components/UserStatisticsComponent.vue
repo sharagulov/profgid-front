@@ -1,104 +1,113 @@
 <template>
-  <div v-if="stats" class="vertical-flex">
-    <div class="info-list">
-      <div class="info-list-item" style="font-weight: bold;">
-        <span>Пройденные тесты</span>
-        <div class="dotted-line"></div>
-        <span>{{stats.passedTests}}</span>
-      </div>
-      <div class="info-list-item">
-        <span>Прочитанные статьи</span>
-        <div class="dotted-line"></div>
-        <span>{{stats.passerArticles}}</span>
-      </div>
-      <br>
-      <div class="info-list-item">
-        <span>Посещенные мероприятия</span>
-        <div class="dotted-line"></div>
-        <span>{{stats.passedEvents}}</span>
-      </div>
-      <div class="info-list-item">
-        <span>Завершенные аттестации</span>
-        <div class="dotted-line"></div>
-        <span>{{stats.passedAttestations}}</span>
-      </div>
-    </div>
+  <div>
+    <h2>Активность</h2>
+    <Line id="activity-chart" :options="chartOptions" :data="chartData" />
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { Line } from 'vue-chartjs'
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale } from 'chart.js'
 
-export default {
-  name: 'UserStatisticsComponent',
-  props: {
-    currentUserId: {
-      type: Number,
-      required: false,
-      default: 0,
-    }
-  },
-  data() {
-    return {
-      stats: null,
-    }
-  },
-  mounted() {
-    this.fetchUserStats()
-  },
-  methods: {
-    async fetchUserStats() {
-      try {
-        const response = await fetch(`http://localhost:3000/users/${this.currentUserId}`)
-        this.stats = await response.json()
-        console.log(this.stats)
-      } catch (error) {
-        console.error('Ошибка при загрузке достижений:', error)
-      }
-    },
-  }
+ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale)
+
+let lastActivityTime = 0 // Время последнего зафиксированного действия
+
+// 🔹 Получаем ключ для текущего дня
+const getTodayKey = () => {
+  const today = new Date()
+  return today.toISOString().split('T')[0] // YYYY-MM-DD
 }
+
+// 🔹 Получаем текущий час (0-23)
+const getCurrentHour = () => {
+  return new Date().getHours()
+}
+
+// 🔹 Фиксируем действие пользователя
+const registerActivity = () => {
+  const now = Date.now()
+  if (now - lastActivityTime < 500) return // Ограничение на частоту (чтобы не спамить события)
+
+  lastActivityTime = now
+  const todayKey = getTodayKey()
+  const hour = getCurrentHour()
+  const activityData = JSON.parse(localStorage.getItem('activityStats')) || {}
+
+  // Увеличиваем счетчик действий за текущий час
+  if (!activityData[todayKey]) activityData[todayKey] = Array(24).fill(0)
+  activityData[todayKey][hour] += 1
+
+  // Сохраняем в localStorage
+  localStorage.setItem('activityStats', JSON.stringify(activityData))
+
+  // Обновляем график
+  updateChartData()
+}
+
+// 🔹 Загружаем статистику активности за текущий день
+const loadActivityData = () => {
+  const todayKey = getTodayKey()
+  const activityData = JSON.parse(localStorage.getItem('activityStats')) || {}
+
+  return activityData[todayKey] || Array(24).fill(0) // Если данных нет, заполняем нулями
+}
+
+// 🔹 Обновляем данные для графика
+const updateChartData = () => {
+  const activityData = loadActivityData()
+  chartData.value.datasets[0].data = activityData
+}
+
+// 🔹 Динамические данные для графика
+const chartData = ref({
+  labels: Array.from({ length: 24 }, (_, i) => `${i}`), // 0:00 - 23:00
+  datasets: [
+    {
+      label: 'Коэффициент активности',
+      data: loadActivityData(),
+      borderColor: 'rgba(163, 40, 40, 1)',
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      fill: false,
+      tension: 0.3 // Плавные линии
+    }
+  ]
+})
+
+// 🔹 Опции графика
+const chartOptions = ref({
+  responsive: true,
+  plugins: {
+    legend: { display: true },
+  },
+  scales: {
+    y: { beginAtZero: true }
+  }
+})
+
+// 🔹 Фиксируем вход на страницу
+onMounted(() => {
+  registerActivity() // Фиксируем факт захода на страницу
+
+  // Навешиваем обработчики для отслеживания действий пользователя
+  document.addEventListener('click', registerActivity)
+  document.addEventListener('keydown', registerActivity)
+  document.addEventListener('scroll', registerActivity)
+})
+
+// 🔹 Фиксируем выход со страницы
+onBeforeUnmount(() => {
+  document.removeEventListener('click', registerActivity)
+  document.removeEventListener('keydown', registerActivity)
+  document.removeEventListener('scroll', registerActivity)
+})
 </script>
 
-<style scoped lang="scss">
-@import '@/styles/variables.scss';
-
-  .vertical-flex {
-    flex-direction: column;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    flex: 1 0 0;
-    align-self: stretch;
-  }
-
-  .info-list {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    align-self: stretch;
-  }
-  
-  .info-list-item {
-    display: flex;
-    align-items: center; 
-    width: 100%;
-  }
-  
-  .dotted-line {
-    flex-grow: 1; 
-    height: 1px;
-    background-image: radial-gradient(circle, $low-gray 5px, transparent 5px);
-    background-size: 5px 5px; 
-    margin: 0 10px; 
-  }
-
-  .avatar {
-    width: 155px;
-    height: 155px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+<style scoped>
+h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
 </style>

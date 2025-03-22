@@ -6,25 +6,24 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'BlockComponent',
-  props: {
-    variant: {
-      type: String,
-      default: 'transparent', // Значение по умолчанию
-      validator: value => {
-        return ['transparent', 'grey'].includes(value);
-      }
-    }
-  },
-  computed: {
-    variantClass() {
-      return this.variant === 'grey' ? 'grey' : 'transparent';
+<script setup>
+import { computed, defineProps } from 'vue'
+
+const props = defineProps({
+  variant: {
+    type: String,
+    default: 'transparent', // Значение по умолчанию
+    validator: value => {
+      return ['transparent', 'grey'].includes(value);
     }
   }
-}
+})
+
+const variantClass = computed(() => {
+  return props.variant === 'grey' ? 'grey' : 'transparent';
+})
 </script>
+
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';

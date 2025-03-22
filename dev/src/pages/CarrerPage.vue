@@ -8,7 +8,6 @@
 
         <BlockComponent class="achievements-section">
           <div class="vertical-flex">
-            <span class="t14">Достижения</span>
             <AchievementComponent />
           </div>
         </BlockComponent>  
@@ -19,7 +18,7 @@
       </div>
 
       <div class="right-section">
-        <b class="t32">Карьера</b>
+        <h1 >Карьера</h1>
 
         <div class="right-content">
           <div class="description-list">
@@ -32,11 +31,17 @@
                 </TooltipComponent>
               </div>
             </div>
-            <BlockComponent class="career-path-block">
-              <div class="vertical-flex">
-                <span></span>
+            <RoadmapComponent/>
+            <div style="margin-top: 20px" class="description-list-item">
+              <span class="t14">Задания</span>
+              <div style="align-content: center;">
+                <img src="@/assets/INFO.png" alt="INFO">
+                <TooltipComponent>
+                  <span>Здесь будет отображаться ваша карьера, а также, кем вы можете стать</span>
+                </TooltipComponent>
               </div>
-            </BlockComponent>  
+            </div>
+            <TasksComponent />
           </div>
 
           <div class="right-lower-section">
@@ -84,6 +89,8 @@ import AttestationComponent from '@/components/AttestationComponent.vue'
 import EventComponent from '@/components/EventComponent.vue'
 import EventItem from '@/components/EventItem.vue'
 import Toggler from '@/components/Toggler.vue'
+import RoadmapComponent from '@/components/RoadmapComponent.vue'
+import TasksComponent from '@/components/TasksComponent.vue'
 
 export default {
   components: { 
@@ -95,7 +102,9 @@ export default {
     AttestationComponent, 
     Toggler, 
     EventComponent, 
-    EventItem 
+    EventItem,
+    RoadmapComponent,
+    TasksComponent
   },
 
   setup() {

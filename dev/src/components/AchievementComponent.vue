@@ -1,4 +1,5 @@
 <template>
+  <h2>Достижения</h2>
   <div class="achievements-container">
     <AchievementItem
       v-for="achievement in achievements"
@@ -14,6 +15,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import AchievementItem from '@/components/AchievementItem.vue'
+import data from '@/fake_db/db.json'
 
 const props = defineProps({
   currentUserId: {
@@ -23,19 +25,20 @@ const props = defineProps({
   }
 })
 
-const achievements = ref([])
+const achievements = ref(data.achievements)
 
-const fetchAchievements = async () => {
-  try {
-    const response = await fetch(`http://localhost:3000/achievements?userId=${props.currentUserId}`)
-    achievements.value = await response.json()
-    console.log("Ачивки", achievements.value)
-  } catch (error) {
-    console.error('Ошибка при загрузке достижений:', error)
-  }
-}
+// const fetchAchievements = async () => {
+//   try {
+//     const response = await fetch(`http://localhost:3000/achievements`)
+//     achievements.value = await response.json()
+//     console.log("Ачивки", achievements.value)
+//   } catch (error) {
+//     console.error('Ошибка при загрузке достижений:', error)
+//   }
+// }
 
-onMounted(fetchAchievements)
+// onMounted(fetchAchievements)
+
 </script>
 
 <style scoped lang="scss">

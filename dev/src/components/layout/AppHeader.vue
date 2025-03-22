@@ -80,6 +80,10 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
+* {
+  z-index: 9999
+}
+
 .header {
   position: fixed;
   width: 100%;

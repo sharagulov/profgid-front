@@ -7,39 +7,38 @@
         <div class="frame-description">{{ description }}</div>
         <img class="eye-icon" src="eye.png" alt="Просмотр">
       </div>
-      <img class="frame-image" src="avatar3.gif" alt="Изображение">
+      <img class="frame-image" :src="imageSrc" alt="Изображение">
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "ArticleComponent",
-  props: {
-    number: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    imageSrc: {
-      type: String,
-      required: true
-    }
+<script setup>
+import { defineProps } from 'vue'
+
+const props = defineProps({
+  number: {
+    type: String,
+    required: true
   },
-  methods: {
-    onFrameClick() {
-      console.log(`Нажали на статью: ${this.title}`);
-    }
+  title: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  imageSrc: {
+    type: String,
+    required: true
   }
-};
+})
+
+const onFrameClick = () => {
+  console.log(`Нажали на статью: ${props.title}`);
+}
 </script>
+
 
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
