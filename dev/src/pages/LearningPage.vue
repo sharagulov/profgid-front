@@ -20,15 +20,25 @@
           </div>
         </div>
 
-        <!-- <div>
+         <div>
           <p class="section-title">Актуальные тесты</p>
-          <div class="articles-container">
+         <div class="articles-container">
+        <TestComponent
+              v-for="test in tests"
+              :key="test.id"
+              class="test"
+              :number="'0' + test.id + '.'"
+              :title="test.name"
+              :description="test.desc"
+              :imageSrc="test.imageSrc"
+              @click="openArticle(test.id)"
+            /> 
+      <!--  <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
             <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
             <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
-            <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
-            <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
+            <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" /> -->
           </div>
-        </div> -->
+        </div>
       </div>
     </main>
   </div>
@@ -88,15 +98,13 @@
   .left-section {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    width: 100%;
+    width: 95%;
   }
 
   .achievements-title {
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 30px;
-    text-align: center;
   }
 
   .section-title {

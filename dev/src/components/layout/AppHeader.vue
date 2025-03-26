@@ -6,7 +6,6 @@
           <img src="@/assets/LOGO_RED.png" alt="LOGO_RED">
           <router-link to="/carrer"><ButtonComponent variant="ghost">Карьера</ButtonComponent></router-link>
           <router-link to="/learning"><ButtonComponent variant="ghost">Обучение</ButtonComponent></router-link>
-          <ButtonComponent variant="ghost">Библиотека</ButtonComponent>
           <ButtonComponent variant="ghost"><a href="https://www.lemax.ru/"> О нас </a></ButtonComponent>
         </div>
         <div class="header-buttons-2">
@@ -33,7 +32,6 @@
         <div class="menu">
           <router-link to="/carrer"><ButtonComponent variant="filler">Карьера</ButtonComponent></router-link>
           <router-link to="/learning"><ButtonComponent variant="filler">Обучение</ButtonComponent></router-link>
-          <ButtonComponent variant="filler">Библиотека</ButtonComponent>
           <ButtonComponent variant="filler"><a href="https://www.lemax.ru/"> О нас </a></ButtonComponent>
         </div>
       </div>
@@ -81,7 +79,7 @@ onBeforeUnmount(() => {
 @import '@/styles/variables.scss';
 
 * {
-  z-index: 9999
+  z-index: 999
 }
 
 .header {

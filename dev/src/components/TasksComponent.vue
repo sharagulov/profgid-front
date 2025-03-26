@@ -24,6 +24,7 @@
         v-for="(articleId, idx) in roadmapItem?.reqArticles || []"
         :key="'article-' + idx"
         variant="grey"
+        @click="goToArticle(articleId)"
       >
         Статья {{ articleId }}
       </ButtonComponent>
@@ -39,6 +40,7 @@
         v-for="(testId, idx) in roadmapItem?.reqTests || []"
         :key="'test-' + idx"
         variant="grey"
+        @click="goToTest(testId)"
       >
         Тестирование {{ testId }}
       </ButtonComponent>
@@ -112,6 +114,19 @@ const roadmapItem = computed(() => {
 });
 
 
+
+
+
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const goToArticle = (id) => {
+  router.push(`/learning/article/${id}`)
+}
+
+const goToTest = (id) => {
+  router.push(`/learning/test/${id}`)
+}
 </script>
 
 <style scoped lang="scss">

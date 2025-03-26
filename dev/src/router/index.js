@@ -4,6 +4,7 @@ import LoginPage from '@/pages/LoginPage.vue'
 import CarrerPage from '@/pages/CarrerPage.vue'
 import LearningPage from '@/pages/LearningPage.vue'
 import ArticlePage from '@/pages/ArticlePage.vue'
+import TestPage from '@/pages/TestPage.vue'
 import HrPage from '@/pages/HrPage.vue'
 
 const routes = [
@@ -19,6 +20,8 @@ const routes = [
 
   { path: '/learning/article/:id', name: 'ArticlePage', component: ArticlePage, meta: { requiresAuth: true } },
   
+  { path: '/learning/test/:id', name: 'TestPage', component: TestPage, meta: { requiresAuth: true } },
+
   { path: '/hr', name: 'HrPage', component: HrPage }
 ]
 
