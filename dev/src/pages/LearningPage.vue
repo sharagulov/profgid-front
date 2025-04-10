@@ -20,25 +20,29 @@
           </div>
         </div>
 
-         <div>
+
+        <div>
           <p class="section-title">Актуальные тесты</p>
-         <div class="articles-container">
-        <TestComponent
+          
+          <div class="articles-container" style="justify-content: flex-start;">
+            <TestComponent
               v-for="test in tests"
               :key="test.id"
-              class="test"
+              class="article"
               :number="'0' + test.id + '.'"
-              :title="test.name"
-              :description="test.desc"
-              :imageSrc="test.imageSrc"
-              @click="openArticle(test.id)"
-            /> 
+              :title="test.title"
+              :description="test.description"
+              :imageSrc="test.imageSrc" 
+              @click="openTest(test.id)"
+            />
+          
+          </div>
+        </div>
+                 
       <!--  <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
             <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
             <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" />
-            <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" /> -->
-          </div>
-        </div>
+            <TestComponent class="article" number="07." title="Собачий кайф" description="Не стоит прикармливать животных, которые завелись на производстве. Если это кошка с котятами — ничего не поделаешь." imageSrc="/avatars/avatar3.gif" /> -->        
       </div>
     </main>
   </div>
@@ -53,7 +57,8 @@
   import data from '@/fake_db/db.json'
 
   const articles = ref(data.articles)
-
+  const tests = ref(data.tests)
+  
   // const fetchArticles = async () => {
   //   try {
   //     const response = await fetch(`http://localhost:3000/articles`)
@@ -65,11 +70,16 @@
 
   // onMounted(fetchArticles)
 
-  
+
   const router = useRouter();
   const openArticle = (id) => {
     router.push(`/learning/article/${id}`);
   }
+
+  const openTest = (id) => {
+  router.push(`/learning/test/${id}`)
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -117,7 +127,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center; // Центрируем, если карточек меньше 3
+  justify-content: left; // Центрируем, если карточек меньше 3
 
   .article {
     flex: 1 1 calc(33.33% - 20px); // 3 в ряд, учитывая gap

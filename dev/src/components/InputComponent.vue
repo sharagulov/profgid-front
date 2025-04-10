@@ -43,33 +43,30 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 </script>
 
-
-<style lang="scss" scoped>
-@import '@/styles/variables.scss';
-
+<style scoped>
 .input-field {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
   width: 100%;
+}
 
-  label {
-      margin-left: 15px;
-    }
+label {
+  font-weight: 500;
+  font-size: 14px;
+}
 
-  .input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
+.input-wrapper {
+  display: flex;
+  align-items: center;
+}
 
-    input {
-      width: 100%;
-      padding: 0.7rem 1rem;
-      border: 1px solid $low-gray;
-      border-radius: 9999px;
-      outline: none;
-      font-size: 14px;
-    }
-  }
+input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 9999px;
+  outline: none;
+  font-size: 14px;
 }
 </style>

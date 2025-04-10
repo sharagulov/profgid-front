@@ -1,6 +1,7 @@
 <template>
   <div class="training-card" @click="onCardClick">
-    <img class="training-image" src="avatar3.gif" alt="Изображение">
+   <!-- <img class="training-image" src="avatar3.gif" alt="Изображение"> -->
+   <img class="training-image" src="/test1.png" alt="Изображение">
 
     <div class="training-content">
       <div class="training-info">

@@ -80,6 +80,8 @@
 
 <script>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
 import TooltipComponent from '@/components/TooltipComponent.vue'
 import AchievementComponent from '@/components/AchievementComponent.vue'
 import BlockComponent from '@/components/BlockComponent.vue'
@@ -93,15 +95,15 @@ import RoadmapComponent from '@/components/RoadmapComponent.vue'
 import TasksComponent from '@/components/TasksComponent.vue'
 
 export default {
-  components: { 
-    BlockComponent, 
-    AchievementComponent, 
-    TooltipComponent, 
-    UserInfoComponent, 
-    UserStatisticsComponent, 
-    AttestationComponent, 
-    Toggler, 
-    EventComponent, 
+  components: {
+    BlockComponent,
+    AchievementComponent,
+    TooltipComponent,
+    UserInfoComponent,
+    UserStatisticsComponent,
+    AttestationComponent,
+    Toggler,
+    EventComponent,
     EventItem,
     RoadmapComponent,
     TasksComponent
@@ -110,13 +112,14 @@ export default {
   setup() {
     const user = ref(null)
     const showAttestationsHistory = ref(false)
+    const router = useRouter()
 
     const fetchUser = async () => {
       try {
         const accessToken = localStorage.getItem('access_token')
         if (!accessToken) return
 
-        const response = await fetch('http://profguide.leganyst.ru:61180/users/me', {
+        const response = await fetch('http://profguide.leganyst.ru:61180/employee/me', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -126,6 +129,14 @@ export default {
 
         const data = await response.json()
         if (!response.ok) throw new Error(data.message || 'Ошибка при загрузке пользователя')
+        const role = data.role || (data.user && data.user.role)
+
+
+        if (role === 'hr' || role === 'admin') {
+  router.replace({ name: 'HrPage' })
+  return
+}
+        
 
         user.value = data
       } catch (error) {
@@ -135,7 +146,7 @@ export default {
 
     onMounted(fetchUser)
 
-    return { 
+    return {
       user,
       showAttestationsHistory
     }

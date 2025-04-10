@@ -36,62 +36,59 @@ const variantClass = computed(() => {
 })
 </script>
 
-
-<style lang="scss" scoped>
-@import '@/styles/variables.scss';
-
+<style scoped>
 .container {
   width: fit-content;
-  height: fit-content;
   border-radius: 9999px;
   padding: 10px 20px;
   cursor: pointer;
   border: none;
   transition: background-color 0.2s, color 0.2s;
+}
 
-  // Вариант Default
-  &.default-variant {
-    background-color: $main-red;
-    color: white;
+.container .text {
+  text-align: center;
+}
 
-    &:hover {
-      background-color: $main-red-hover;
-    }
-  }
+.default-variant {
+  background-color: #a40000;
+  color: white;
+}
 
-  // Вариант Ghost
-  &.ghost-variant {
-    background-color: transparent;
-    color: black;
+.default-variant:hover {
+  background-color: #800000;
+}
 
-    &:hover {
-      background-color: $main-red;
-      color: white;
-    }
-  }
+.ghost-variant {
+  background-color: transparent;
+  color: black;
+}
 
-  // Вариант Filler
-  &.filler-variant {
-    background-color: transparent;
-    color: black;
-    padding: 10px 10px;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
+.ghost-variant:hover {
+  background-color: #a40000;
+  color: white;
+}
 
-    &:hover {
-      background-color: $main-red;
-      color: white;
-    }
-  }
+.filler-variant {
+  background-color: transparent;
+  color: black;
+  padding: 10px 10px;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-  &.grey-variant {
-    background-color: $lowest-gray;
-    padding: 7px 20px;
+.filler-variant:hover {
+  background-color: #a40000;
+  color: white;
+}
 
-    &:hover {
-      background-color: $low-gray;
-    }
-  }
+.grey-variant {
+  background-color: #eee;
+  padding: 7px 20px;
+}
+
+.grey-variant:hover {
+  background-color: #ccc;
 }
 </style>

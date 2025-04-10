@@ -84,7 +84,7 @@ export const useAuthStore = defineStore('auth', {
       if (!this.accessToken) return
 
       try {
-        const response = await fetch('http://profguide.leganyst.ru:61180/users/me', {
+        const response = await fetch('http://profguide.leganyst.ru:61180/employee/me', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

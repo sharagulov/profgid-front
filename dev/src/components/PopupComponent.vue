@@ -2,7 +2,9 @@
   <div v-if="visible" class="popup-overlay" @click.self="close">
     <div class="popup-content">
       <slot />
-      <button @click="close">Закрыть</button>
+      <div class="cadabra">
+        <button class="close-btn" @click="close">Закрыть</button>
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +40,29 @@ const close = () => {
   background: white;
   padding: 2rem;
   border-radius: 10px;
-  min-width: 300px;
+  width: 90%;
+  max-width: 900px; /* шире попап */
+  max-height: 85vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.close-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 9999px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background-color: #ccc;
+}
+
+
+.cadabra {
+  display: flex;
+  justify-content: center;
 }
 </style>
