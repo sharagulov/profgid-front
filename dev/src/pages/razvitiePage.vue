@@ -1,5 +1,5 @@
 <template>
-  <div class="career-page">
+  <div class="razvitie-page">
     <main>
       <div class="left-section">
         <BlockComponent class="profile-block">
@@ -18,7 +18,12 @@
       </div>
 
       <div class="right-section">
-        <h1 >Карьера</h1>
+        <div style="display:flex; flex-direction:column; gap: 10px">
+
+          <h1 >Развитие</h1>
+          <span class="t14">В данном разделе Вы откроете для себя новые возможности для развития карьеры, узнаете о свободных вакансиях и перспективах роста.
+          </span>
+        </div>
 
         <div class="right-content">
           <div class="description-list">
@@ -48,14 +53,8 @@
             <div class="description-list lower-description-list">
               <div class="description-list-item">
                 <span class="t14">Мои мероприятия</span>
-                <div style="align-content: center;">
-                  <img src="@/assets/INFO.png" alt="INFO">
-                  <TooltipComponent>
-                    <span>Мероприятия, которые вам сейчас доступны</span>
-                  </TooltipComponent>
-                </div>
               </div>
-              <span>Галочку с текстом</span>
+
               <EventComponent /> 
             </div>
             <div class="description-list lower-description-list">
@@ -157,7 +156,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
-.career-page {
+.razvitie-page {
   padding-block: 130px;
   text-align: left;
 

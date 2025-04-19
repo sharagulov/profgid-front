@@ -2,11 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import LandingPage from '@/pages/LandingPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
-import CarrerPage from '@/pages/CarrerPage.vue'
-import LearningPage from '@/pages/LearningPage.vue'
+import razvitiePage from '@/pages/razvitiePage.vue'
+import adaptaciaPage from '@/pages/adaptaciaPage.vue'
 import ArticlePage from '@/pages/ArticlePage.vue'
 import TestPage from '@/pages/TestPage.vue'
 import HrPage from '@/pages/HrPage.vue'
+import AboutPage from '@/pages/AboutPage.vue'
 
 const routes = [
   // Специальный маршрут для входа в систему — он без компонента
@@ -16,10 +17,11 @@ const routes = [
   { path: '/landing', name: 'LandingPage', component: LandingPage },
 
   // Доступны всем авторизованным пользователям
-  { path: '/carrer', name: 'CarrerPage', component: CarrerPage, meta: { requiresAuth: true } },
-  { path: '/learning', name: 'LearningPage', component: LearningPage, meta: { requiresAuth: true, roles: ['user'] } },
-  { path: '/learning/article/:id', name: 'ArticlePage', component: ArticlePage, meta: { requiresAuth: true, roles: ['user'] } },
-  { path: '/learning/test/:id', name: 'TestPage', component: TestPage, meta: { requiresAuth: true, roles: ['user'] } },
+  { path: '/razvitie', name: 'razvitiePage', component: razvitiePage, meta: { requiresAuth: true }, roles: ['user'] },
+  { path: '/adaptacia', name: 'adaptaciaPage', component: adaptaciaPage, meta: { requiresAuth: true, roles: ['user'] } },
+  { path: '/about', name: 'AboutPage', component: AboutPage, meta: { requiresAuth: true } },
+  { path: '/adaptacia/article/:id', name: 'ArticlePage', component: ArticlePage, meta: { requiresAuth: true, roles: ['user'] } },
+  { path: '/adaptacia/test/:id', name: 'TestPage', component: TestPage, meta: { requiresAuth: true, roles: ['user'] } },
 
   // Только для HR и admin
   { path: '/hr', name: 'HrPage', component: HrPage, meta: { requiresAuth: true, roles: ['hr', 'admin'] } }
@@ -63,7 +65,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       const role = await getUserRole()
       if (['hr', 'admin'].includes(role)) return next({ name: 'HrPage' })
-      else return next({ name: 'CarrerPage' })
+      else return next({ name: 'AboutPage' })
     } catch {
       return next({ name: 'LoginPage' })
     }
@@ -89,10 +91,10 @@ router.beforeEach(async (to, from, next) => {
       if (['hr', 'admin'].includes(role)) {
         return next({ name: 'HrPage' })
       } else {
-        return next({ name: 'CarrerPage' })
+        return next({ name: 'AboutPage' })
       }
     } catch {
-      return next({ name: 'CarrerPage' }) // если вдруг ошибка — по умолчанию
+      return next({ name: 'AboutPage' }) // если вдруг ошибка — по умолчанию
     }
   }
 

@@ -4,9 +4,9 @@
       <div class="container">
         <div class="header-buttons">
           <img src="@/assets/LOGO_RED.png" alt="LOGO_RED">
-          <router-link to="/carrer"><ButtonComponent variant="ghost">Карьера</ButtonComponent></router-link>
-          <router-link to="/learning"><ButtonComponent variant="ghost">Обучение</ButtonComponent></router-link>
-          <ButtonComponent variant="ghost"><a href="https://www.lemax.ru/"> О нас </a></ButtonComponent>
+          <router-link to="/about"><ButtonComponent variant="ghost">О нас</ButtonComponent></router-link>
+          <router-link to="/adaptacia"><ButtonComponent variant="ghost">Адаптация</ButtonComponent></router-link>
+          <router-link to="/razvitie"><ButtonComponent variant="ghost">Развитие</ButtonComponent></router-link>
         </div>
         <div class="header-buttons-2">
           <!-- Если не авторизован, показываем кнопку "Войти" -->
@@ -30,9 +30,9 @@
       </div>
       <div class="menu-container" :class="{ 'menu-container-open': isMenuOpen }">
         <div class="menu">
-          <router-link to="/carrer"><ButtonComponent variant="filler">Карьера</ButtonComponent></router-link>
-          <router-link to="/learning"><ButtonComponent variant="filler">Обучение</ButtonComponent></router-link>
-          <ButtonComponent variant="filler"><a href="https://www.lemax.ru/"> О нас </a></ButtonComponent>
+          <router-link to="/about"><ButtonComponent variant="filler">О нас</ButtonComponent></router-link>
+          <router-link to="/adaptacia"><ButtonComponent variant="filler">Адаптация</ButtonComponent></router-link>
+          <router-link to="/razvitie"><ButtonComponent variant="filler">Развитие</ButtonComponent></router-link>
         </div>
       </div>
     </div>

@@ -17,8 +17,7 @@
           <th>ID</th>
           <th>Имя</th>
           <th>Должность</th>
-          <th>Стаж</th>
-          <th>Последнее повышение</th>
+          <th>Участок/подразделение</th>
         </tr>
       </thead>
       <tbody>
@@ -30,8 +29,7 @@
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.position }}</td>
-          <td>{{ user.experience }}</td>
-          <td>{{ user.lastUpdated }}</td>
+          <td>{{ "ШПУ производства радиаторов" }}</td>
         </tr>
       </tbody>
     </table>
@@ -202,7 +200,7 @@ function formatDate(d) {
 
 function mapPosition(id) {
   return {
-    1: 'Слесарь',
+    1: 'Оператор автоматизированной линии',
     2: 'Сварщик',
     3: 'Инженер',
     4: 'Начальник цеха'

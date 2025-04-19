@@ -121,11 +121,11 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const goToArticle = (id) => {
-  router.push(`/learning/article/${id}`)
+  router.push(`/adaptacia/article/${id}`)
 }
 
 const goToTest = (id) => {
-  router.push(`/learning/test/${id}`)
+  router.push(`/adaptacia/test/${id}`)
 }
 </script>
 

@@ -36,10 +36,10 @@
             <div class="select-group">
               <label for="editPosition">Должность</label>
               <select id="editPosition" v-model="editUser.employee.current_position_id">
-                <option :value="1">Слесарь</option>
+                <option :value="4">Оператор автоматизированной линии</option>
                 <option :value="2">Сварщик</option>
                 <option :value="3">Инженер</option>
-                <option :value="4">Начальник цеха</option>
+                <option :value="5">Начальник цеха</option>
               </select>
             </div>
 

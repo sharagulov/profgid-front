@@ -1,40 +1,29 @@
 <template>
   <div v-if="user" class="vertical-flex">
-    <img class="avatar" :src="user.avatar || 'AVATAR.png'" alt="LOGO_RED">
+    <img class="avatar" :src="user.avatar || 'LEA.jpg'" alt="LOGO_RED">
     <h2>{{ user?.user?.full_name }}</h2>
 
     <div class="info-list">
       <div class="info-list-item" style="font-weight: bold;">
         <span>Должность</span>
         <div class="dotted-line"></div>
-        <span>{{ user?.employee?.current_position_id }}</span>
+        <span>{{ user?.employee?.profession.name }}</span>
       </div>
 
       <div class="info-list-item">
         <span>Разряд</span>
         <div class="dotted-line"></div>
-        <span>{{ user?.employee?.current_position_id }}</span>
+        <span>{{ user?.employee?.position.name }}</span>
       </div>
 
       <br>
 
       <div class="info-list-item">
-        <span>В штате с</span>
+        <span>Дата приема</span>
         <div class="dotted-line"></div>
         <span>{{ companyStartFormatted }}</span>
       </div>
 
-      <div class="info-list-item">
-        <span>Стаж</span>
-        <div class="dotted-line"></div>
-        <span>{{ companyExperienceFormatted }}</span>
-      </div>
-
-      <div class="info-list-item">
-        <span>Последнее повышение</span>
-        <div class="dotted-line"></div>
-        <span>{{ lastPromotionFormatted }}</span>
-      </div>
     </div>
   </div>
 

@@ -1,28 +1,28 @@
 <template>
-  <div class="professions-tab">
+  <div class="positions-tab">
     <div class="top-bar">
-      <p class="subtitle">Список профессий</p>
+      <p class="subtitle">Список должностей</p>
       <button class="create-btn" @click="isCreateOpen = true">
         + Добавить
       </button>
     </div>
 
-    <div v-if="loading">Загрузка профессий...</div>
+    <div v-if="loading">Загрузка должностей...</div>
     <div v-else-if="error">{{ error }}</div>
 
-    <table v-else class="professions-table">
+    <table v-else class="positions-table">
       <thead>
         <tr>
           <th>ID</th>
           <th>Название</th>
           <th>Описание</th>
-          <th>Привязанные должности</th>
+          <th>Следующие должности</th>
           <th>Действия</th>
         </tr>
       </thead>
       <tbody>
         <tr
-          v-for="item in professions"
+          v-for="item in positions"
           :key="item.id"
           @click="openEdit(item)"
           class="clickable-row"
@@ -31,54 +31,70 @@
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>
-            <span v-if="item.position_ids?.length">{{ item.position_ids.join(', ') }}</span>
+            <span v-if="item.next_position_ids?.length">
+              {{ item.next_position_ids.join(', ') }}
+            </span>
             <span v-else>Нет</span>
           </td>
           <td>
-            <button @click.stop="deleteProfession(item.id)">Удалить</button>
+            <button @click.stop="deletePosition(item.id)">Удалить</button>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <CreateProfessionPopup v-if="isCreateOpen" @close="isCreateOpen = false" @created="onCreated" />
-    <EditProfessionPopup v-if="editData" :profession="editData" @close="editData = null" @updated="onUpdated" />
+    <CreatePositionPopup
+      v-if="isCreateOpen"
+      @close="isCreateOpen = false"
+      @created="onCreated"
+    />
+
+    <EditPositionPopup
+      v-if="editData"
+      :position="editData"
+      @close="editData = null"
+      @updated="onUpdated"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import CreateProfessionPopup from './CreateProfessionPopup.vue'
-import EditProfessionPopup from './EditProfessionPopup.vue'
 
-const professions = ref([])
+import CreatePositionPopup from './CreatePositionPopup.vue'
+import EditPositionPopup from './EditPositionPopup.vue'
+
+const positions = ref([])
 const loading = ref(false)
 const error = ref(null)
+
 const isCreateOpen = ref(false)
 const editData = ref(null)
 
-async function fetchProfessions() {
+async function fetchPositions() {
   loading.value = true
   error.value = null
   try {
     const accessToken = localStorage.getItem('access_token')
-    const res = await fetch('http://profguide.leganyst.ru:61180/hr/professions/all', {
+    const res = await fetch('http://profguide.leganyst.ru:61180/hr/positions/all', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       }
     })
-    if (!res.ok) throw new Error('Ошибка при загрузке списка профессий')
-    professions.value = await res.json()
+    if (!res.ok) throw new Error('Ошибка при загрузке списка должностей')
+    const data = await res.json()
+    positions.value = data
   } catch (err) {
     error.value = err.message
+    console.error(err)
   } finally {
     loading.value = false
   }
 }
 
-onMounted(fetchProfessions)
+onMounted(fetchPositions)
 
 function openEdit(item) {
   editData.value = JSON.parse(JSON.stringify(item))
@@ -86,34 +102,35 @@ function openEdit(item) {
 
 function onCreated() {
   isCreateOpen.value = false
-  fetchProfessions()
+  fetchPositions()
 }
 
 function onUpdated() {
   editData.value = null
-  fetchProfessions()
+  fetchPositions()
 }
 
-async function deleteProfession(id) {
-  if (!confirm('Точно удалить эту профессию?')) return
+async function deletePosition(id) {
+  if (!confirm('Точно удалить эту должность?')) return
   try {
     const accessToken = localStorage.getItem('access_token')
-    const res = await fetch(`http://profguide.leganyst.ru:61180/hr/professions/${id}`, {
+    const res = await fetch(`http://profguide.leganyst.ru:61180/hr/positions/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     })
-    if (!res.ok) throw new Error('Ошибка при удалении профессии')
-    await fetchProfessions()
+    if (!res.ok) throw new Error('Ошибка при удалении должности')
+    await fetchPositions()
   } catch (err) {
     alert(err.message)
+    console.error(err)
   }
 }
 </script>
 
 <style scoped lang="scss">
-.professions-tab {
+.positions-tab {
   .top-bar {
     display: flex;
     justify-content: space-between;
@@ -121,7 +138,7 @@ async function deleteProfession(id) {
     margin-bottom: 15px;
   }
 
-  .professions-table {
+  .positions-table {
     width: 100%;
     border-collapse: collapse;
 

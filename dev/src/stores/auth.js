@@ -1,3 +1,4 @@
+// src/stores/auth.js
 import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', {
@@ -34,15 +35,19 @@ export const useAuthStore = defineStore('auth', {
       localStorage.setItem('expires_at', expiresAt)
     },
 
-    // Загрузка токенов при перезагрузке страницы
+    // Загрузка токенов при старте
     loadTokensFromStorage() {
-      this.accessToken = localStorage.getItem('access_token')
-      this.refreshToken = localStorage.getItem('refresh_token')
-      this.expiresAt = localStorage.getItem('expires_at')
+      const accessToken = localStorage.getItem('access_token')
+      const refreshToken = localStorage.getItem('refresh_token')
+      const expiresAt = localStorage.getItem('expires_at')
 
-      // Если есть токен, загружаем пользователя
-      if (this.accessToken) {
+      if (accessToken && expiresAt && new Date() < new Date(expiresAt)) {
+        this.accessToken = accessToken
+        this.refreshToken = refreshToken
+        this.expiresAt = expiresAt
         this.fetchUser()
+      } else {
+        this.logout()
       }
     },
 
@@ -64,7 +69,7 @@ export const useAuthStore = defineStore('auth', {
           throw new Error(data.message || 'Ошибка при логине')
         }
 
-        // Сохранить токены
+        // Сохраняем токены
         this.setTokens({
           accessToken: data.access_token,
           refreshToken: data.refresh_token,

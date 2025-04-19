@@ -38,6 +38,7 @@
 <script>
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import InputComponent from '@/components/InputComponent.vue'
+import { useAuthStore } from '@/stores/auth'
 
 export default {
   components: { InputComponent, ButtonComponent },
@@ -70,8 +71,19 @@ export default {
         localStorage.setItem('refresh_token', data.refresh_token)
         localStorage.setItem('expires_at', data.expires_at)
 
+        
+const authStore = useAuthStore()
+
+// после успешного fetch:
+authStore.setTokens({
+  accessToken: data.access_token,
+  refreshToken: data.refresh_token,
+  expiresAt: data.expires_at
+})
+await authStore.fetchUser()
+
         // Перенаправляем пользователя
-        this.$router.push('/carrer')
+        this.$router.push('/about')
       } catch (err) {
         this.errorMessage = 'Ошибка при авторизации'
       }
