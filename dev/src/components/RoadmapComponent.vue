@@ -15,15 +15,10 @@
         :class="{ active: index === 0 }"
       ></div>
 
-      <!-- Название должности + разряд -->
+
       <div class="stage-label">
         {{ stage.position }}
-        <div class="stage-rank">
-          <span>
-          <!-- Если категория == 0, пишем "без разряда", иначе "N разряд" -->
-          {{ stage.category === 0 ? 'без разряда' : stage.category + ' разряд' }}
-          </span>
-        </div>
+
       </div>
     </div>
   </div>
@@ -33,109 +28,20 @@
 import { computed } from 'vue'
 import data from '@/fake_db/db.json'
 
-const props = defineProps({
-  user: {
-    type: Object,
-    default: () => ({
-      position: 'Слесарь',
-      rank: 3
-    })
-  }
-})
+// Допустим, в db.json у тебя roadmap как сейчас:
+// "roadmap": [ { id: 1, from: { position: "...", category: ... }, ... }, ... ]
 
-// Импортируем roadmap из фейковой БД
 const roadmap = data.roadmap
 
-/**
- * Находит цепочку переходов для текущего пользователя + следующие шаги.
- * Вернёт массив объектов roadmap в нужном порядке.
- */
-function findChain(roadmap, position, category) {
-  const result = []
-
-  // Находим текущий шаг (там, где from совпадает с user)
-  let current = roadmap.find(
-    item =>
-      item.from.position === position &&
-      item.from.category === category
-  )
-
-  // Если не нашли, выходим
-  if (!current) {
-    return result
-  }
-
-  // Помещаем текущий шаг
-  result.push(current)
-
-  // Ищем следующий шаг (from = previous.to)
-  let next = roadmap.find(
-    item =>
-      item.from.position === current.to.position &&
-      item.from.category === current.to.category
-  )
-  if (next) {
-    result.push(next)
-  }
-
-  // Третий шаг, если есть
-  if (next) {
-    const next2 = roadmap.find(
-      item =>
-        item.from.position === next.to.position &&
-        item.from.category === next.to.category
-    )
-    if (next2) {
-      result.push(next2)
-    }
-  }
-
-  return result
-}
-
-// Находим цепочку из 1–3 шагов
-const chain = findChain(roadmap, props.user.position, props.user.rank)
-
-/**
- * Превращаем переходы roadmap в "этапы" для вывода:
- *  - Первый этап: from первого шага
- *  - Второй этап: to первого шага
- *  - Третий этап: to второго шага
- *  (Больше двух последующих этапов не показываем)
- */
-const stagesToShow = computed(() => {
-  if (!chain.length) {
-    // Если вообще не нашли переход, покажем только текущего пользователя
-    return [
-      { position: props.user.position, category: props.user.rank }
-    ]
-  }
-
-  const stages = []
-
-  // 1. Текущий (from первого шага)
-  stages.push({
-    position: chain[0].from.position,
-    category: chain[0].from.category
-  })
-
-  // 2. to первого шага
-  stages.push({
-    position: chain[0].to.position,
-    category: chain[0].to.category
-  })
-
-  // 3. Если есть второй шаг, добавляем его `to`
-  if (chain[1]) {
-    stages.push({
-      position: chain[1].to.position,
-      category: chain[1].to.category
-    })
-  }
-
-  // Больше трёх этапов не показываем
-  return stages.slice(0, 3)
-})
+// Упрощённый stagesToShow: ровно столько этапов, сколько записей в roadmap
+const stagesToShow = computed(() =>
+  roadmap.map(item => ({
+    // если хочешь показывать from — leave as is,
+    // если хочешь показывать to — замени на item.to
+    position: item.from.position,
+    category: item.from.category
+  }))
+)
 </script>
 
 <style scoped lang="scss">
@@ -165,7 +71,7 @@ const stagesToShow = computed(() => {
   left: 5%;
   right: 5%;
   height: 7px;
-  background: linear-gradient(90deg, transparent 0%, $main-red 15%, $low-gray 40%, $low-gray 85%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, $main-red 15%, $low-gray 20%, $low-gray 85%, transparent 100%);
   z-index: 1;
 }
 
@@ -199,6 +105,6 @@ const stagesToShow = computed(() => {
 
 .stage-rank {
   font-size: 12px;
-  color: $middle-gray;
+  color: white;
 }
 </style>

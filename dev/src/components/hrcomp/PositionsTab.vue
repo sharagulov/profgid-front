@@ -1,7 +1,7 @@
 <template>
   <div class="positions-tab">
     <div class="top-bar">
-      <p class="subtitle">Список должностей</p>
+      <p class="subtitle">Список участок/подразделение</p>
       <button class="create-btn" @click="isCreateOpen = true">
         + Добавить
       </button>
@@ -16,7 +16,7 @@
           <th>ID</th>
           <th>Название</th>
           <th>Описание</th>
-          <th>Следующие должности</th>
+          <th>Следующие участки/подразделения</th>
           <th>Действия</th>
         </tr>
       </thead>
@@ -120,7 +120,7 @@ async function deletePosition(id) {
         Authorization: `Bearer ${accessToken}`
       }
     })
-    if (!res.ok) throw new Error('Ошибка при удалении должности')
+    if (!res.ok) throw new Error('Ошибка при удалении участки/подразделения')
     await fetchPositions()
   } catch (err) {
     alert(err.message)

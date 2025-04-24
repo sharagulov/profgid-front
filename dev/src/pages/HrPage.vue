@@ -31,7 +31,7 @@ import CertificationsTab from '@/components/hrcomp/CertificationsTab.vue'
 import ProfessionsTab from '@/components/hrcomp/ProfessionsTab.vue'
 import PositionsTab from '@/components/hrcomp/PositionsTab.vue'
 
-const tabs = ['Сотрудники', 'Статьи', 'Тесты', 'Мероприятия', 'Аттестации', 'Профессии', 'Должности']
+const tabs = ['Сотрудники', 'Статьи', 'Тесты', 'Мероприятия', 'Аттестации', 'Должности', 'Участок/подразделение']
 const currentTab = ref('Сотрудники')
 
 // Привязка названия вкладки к соответствующему компоненту
@@ -41,8 +41,8 @@ const tabComponents = {
   'Тесты': TestsTab,
   'Мероприятия': EventsTab,
   'Аттестации': CertificationsTab,
-  'Профессии': ProfessionsTab,
-  'Должности': PositionsTab,
+  'Должности': ProfessionsTab,
+  'Участок/подразделение': PositionsTab,
 }
 
 // Вычисляемый параметр, возвращающий нужный компонент

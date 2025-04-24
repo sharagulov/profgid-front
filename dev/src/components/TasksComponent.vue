@@ -2,7 +2,7 @@
   <div class="tasks-container">
     <!-- Заголовок и счетчик -->
     <div class="tasks-header">
-      <h2>{{ user?.position }} <span>{{ user?.category }} разряд</span></h2>
+      <h2>{{ user?.position }} </h2>
       <div class="tasks-counter">1 / 4</div>
     </div>
 
@@ -87,7 +87,7 @@ const props = defineProps({
   user: {
     type: Object,
     default: () => ({
-      position: "Слесарь",
+      position: "Оператор линии",
       category: 3
     })
   }

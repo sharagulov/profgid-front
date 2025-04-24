@@ -1,7 +1,7 @@
 <template>
   <PopupComponent :visible="true" @close="$emit('close')">
     <template #default>
-      <h2 style="text-align:center; margin-bottom: 20px;">Создание должности</h2>
+      <h2 style="text-align:center; margin-bottom: 20px;">Создание участки/подразделения</h2>
 
       <form class="popup-form" @submit.prevent="createPosition">
         <InputComponent label="Название" v-model="form.name" required />
@@ -18,7 +18,7 @@
         </div>
 
         <div class="select-group">
-          <label>Профессии (ID через запятую)</label>
+          <label>Участок/подразделение (ID через запятую)</label>
           <input v-model="professionIdsInput" placeholder="1,2" />
         </div>
 

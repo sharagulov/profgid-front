@@ -1,14 +1,14 @@
 <template>
   <PopupComponent :visible="true" @close="$emit('close')">
     <template #default>
-      <h2 style="text-align:center; margin-bottom: 20px;">Редактировать профессию</h2>
+      <h2 style="text-align:center; margin-bottom: 20px;">Редактировать должность</h2>
 
       <form class="popup-form" @submit.prevent="updateProfession">
         <InputComponent label="Название" v-model="form.name" required />
         <InputComponent label="Описание" v-model="form.description" required />
 
         <div class="select-group">
-          <label>Должности (ID через запятую)</label>
+          <label>участки/подразделения (ID через запятую)</label>
           <input v-model="positionsInput" placeholder="1,2,3" />
         </div>
 
@@ -56,7 +56,7 @@ async function updateProfession() {
     if (!res.ok) throw new Error()
     emits('updated')
   } catch (err) {
-    alert('Ошибка при обновлении профессии')
+    alert('Ошибка при обновлении участка/подразделения')
   }
 }
 </script>

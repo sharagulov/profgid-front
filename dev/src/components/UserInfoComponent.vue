@@ -1,29 +1,21 @@
 <template>
   <div v-if="user" class="vertical-flex">
-    <img class="avatar" :src="user.avatar || 'LEA.jpg'" alt="LOGO_RED">
+    <img class="avatar" :src="user.avatar || 'LEA.jpg'" alt="LOGO_RED" />
     <h2>{{ user?.user?.full_name }}</h2>
 
-    <div class="info-list">
-      <div class="info-list-item" style="font-weight: bold;">
-        <span>Должность</span>
-        <div class="dotted-line"></div>
-        <span>{{ user?.employee?.profession.name }}</span>
+    <div class="info-table">
+      <div class="info-row">
+        <span class="label">Должность</span>
+        <span class="value">{{ user?.employee?.profession?.name || '—' }}</span>
       </div>
-
-      <div class="info-list-item">
-        <span>Разряд</span>
-        <div class="dotted-line"></div>
-        <span>{{ user?.employee?.position.name }}</span>
+      <div class="info-row">
+        <span class="label">Участок/подразделение</span>
+        <span class="value">{{ user?.employee?.position?.name || '—' }}</span>
       </div>
-
-      <br>
-
-      <div class="info-list-item">
-        <span>Дата приема</span>
-        <div class="dotted-line"></div>
-        <span>{{ companyStartFormatted }}</span>
+      <div class="info-row">
+        <span class="label">Дата приёма</span>
+        <span class="value">{{ companyStartFormatted }}</span>
       </div>
-
     </div>
   </div>
 
@@ -34,59 +26,30 @@
 
 <script setup>
 import { computed } from 'vue'
-import { formatDate, formatExperience } from '@/utils/utils.js'
+import { formatDate } from '@/utils/utils.js'
 
 const props = defineProps({
   user: Object
 })
 
 const companyStartFormatted = computed(() => {
-  return props.user?.employee?.company_start ? formatDate(props.user.employee.company_start) : ''
-})
-
-const companyExperienceFormatted = computed(() => {
-  return props.user?.employee?.overall_experience ? formatExperience(props.user.employee.overall_experience) : ''
-})
-
-const lastPromotionFormatted = computed(() => {
-  return props.user?.employee?.last_promotion ? formatDate(props.user.employee.last_promotion) : ''
+  return props.user?.employee?.company_start
+    ? formatDate(props.user.employee.company_start)
+    : ''
 })
 </script>
-
 
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
 
 .vertical-flex {
-  flex-direction: column;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   gap: 20px;
   flex: 1 0 0;
   align-self: stretch;
-}
-
-.info-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  align-self: stretch;
-}
-
-.info-list-item {
-  display: flex;
-  align-items: center; 
   width: 100%;
-}
-
-.dotted-line {
-  flex-grow: 1;
-  background-color: $lowest-gray;
-  height: 1px;
-  margin: 0 10px;
 }
 
 .avatar {
@@ -95,4 +58,33 @@ const lastPromotionFormatted = computed(() => {
   border-radius: 50%;
   object-fit: cover;
 }
+
+.info-table {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.info-row {
+  display: flex;
+  flex-direction: column; // ⬅️ теперь каждое поле будет друг под другом
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.label {
+  font-weight: 500;
+  color: #555;
+}
+
+.value {
+  word-break: break-word;
+  white-space: normal;
+  font-weight: 600;
+  color: #111;
+}
+
 </style>

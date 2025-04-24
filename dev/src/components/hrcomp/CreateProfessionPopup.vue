@@ -1,14 +1,14 @@
 <template>
   <PopupComponent :visible="true" @close="$emit('close')">
     <template #default>
-      <h2 style="text-align:center; margin-bottom: 20px;">Создание профессии</h2>
+      <h2 style="text-align:center; margin-bottom: 20px;">Создание должности</h2>
 
       <form class="popup-form" @submit.prevent="createProfession">
         <InputComponent label="Название" v-model="form.name" required />
         <InputComponent label="Описание" v-model="form.description" required />
 
         <div class="select-group">
-          <label>Должности (ID через запятую)</label>
+          <label>профессии (ID через запятую)</label>
           <input v-model="positionsInput" placeholder="1,2,3" />
         </div>
 
@@ -50,7 +50,7 @@ async function createProfession() {
     if (!res.ok) throw new Error()
     emits('created')
   } catch (err) {
-    alert('Ошибка при создании профессии')
+    alert('Ошибка при создании должности')
   }
 }
 </script>

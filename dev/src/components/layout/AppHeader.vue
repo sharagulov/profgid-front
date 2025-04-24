@@ -9,12 +9,15 @@
           <router-link to="/razvitie"><ButtonComponent variant="ghost">Развитие</ButtonComponent></router-link>
         </div>
         <div class="header-buttons-2">
-          <!-- Если не авторизован, показываем кнопку "Войти" -->
+          <span v-if="isAuthenticated" class="user-name">
+            {{ authStore.user?.user?.full_name || 'Пользователь' }}
+          </span>
           <router-link v-if="!isAuthenticated" to="/login">
             <ButtonComponent variant="ghost">Войти</ButtonComponent>
           </router-link>
-          <!-- Если авторизован, показываем "Выйти" -->
-          <router-link v-else to="/login"><ButtonComponent @click="logout" variant="ghost">Выйти</ButtonComponent></router-link>
+          <router-link v-else to="/login">
+            <ButtonComponent @click="logout" variant="ghost">Выйти</ButtonComponent>
+          </router-link>
         </div>
       </div>
     </header>
@@ -47,10 +50,10 @@ import { useAuthStore } from '@/stores/auth'
 const authStore = useAuthStore()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 const logout = () => {
-  authStore.logout();
-  }
+  authStore.logout()
+}
 
-// Состояние меню
+
 const isMenuOpen = ref(false)
 
 const toggleMenu = () => {
@@ -64,12 +67,10 @@ const closeMenu = (event) => {
   }
 }
 
-// Добавляем обработчик кликов при монтировании
 onMounted(() => {
   document.addEventListener('click', closeMenu)
 })
 
-// Убираем обработчик кликов перед удалением компонента
 onBeforeUnmount(() => {
   document.removeEventListener('click', closeMenu)
 })
@@ -79,7 +80,7 @@ onBeforeUnmount(() => {
 @import '@/styles/variables.scss';
 
 * {
-  z-index: 999
+  z-index: 999;
 }
 
 .header {
@@ -99,15 +100,23 @@ onBeforeUnmount(() => {
     align-items: center;
     justify-content: space-between;
 
-    .logo {
-      height: 1px;
-    }
-
     .header-buttons {
       display: flex;
       flex-direction: row;
       gap: clamp(10px, 5vw, 100px);
       align-items: center;
+    }
+
+    .header-buttons-2 {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      .user-name {
+        font-weight: bold;
+        color: #222;
+        white-space: nowrap;
+      }
     }
   }
 }

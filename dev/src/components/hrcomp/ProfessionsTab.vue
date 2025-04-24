@@ -1,13 +1,13 @@
 <template>
   <div class="professions-tab">
     <div class="top-bar">
-      <p class="subtitle">Список профессий</p>
+      <p class="subtitle">Список должностей</p>
       <button class="create-btn" @click="isCreateOpen = true">
         + Добавить
       </button>
     </div>
 
-    <div v-if="loading">Загрузка профессий...</div>
+    <div v-if="loading">Загрузка должностей...</div>
     <div v-else-if="error">{{ error }}</div>
 
     <table v-else class="professions-table">
@@ -16,7 +16,7 @@
           <th>ID</th>
           <th>Название</th>
           <th>Описание</th>
-          <th>Привязанные должности</th>
+          <th>Привязанные участки/подразделения</th>
           <th>Действия</th>
         </tr>
       </thead>
@@ -69,7 +69,7 @@ async function fetchProfessions() {
         Authorization: `Bearer ${accessToken}`
       }
     })
-    if (!res.ok) throw new Error('Ошибка при загрузке списка профессий')
+    if (!res.ok) throw new Error('Ошибка при загрузке списка должностей')
     professions.value = await res.json()
   } catch (err) {
     error.value = err.message
@@ -104,7 +104,7 @@ async function deleteProfession(id) {
         Authorization: `Bearer ${accessToken}`
       }
     })
-    if (!res.ok) throw new Error('Ошибка при удалении профессии')
+    if (!res.ok) throw new Error('Ошибка при удалении участка/подразделения')
     await fetchProfessions()
   } catch (err) {
     alert(err.message)
