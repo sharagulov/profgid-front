@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { isMockToken, loadMockUser } from '@/utils/mock'
 
 import LandingPage from '@/pages/LandingPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
@@ -40,6 +41,12 @@ function isAuthenticated() {
 
 async function getUserRole() {
   const token = localStorage.getItem('access_token')
+
+  if (isMockToken(token)) {
+    const user = loadMockUser()
+    return user.role || (user.user && user.user.role)
+  }
+
   const response = await fetch('http://profguide.leganyst.ru:61180/employee/me', {
     headers: {
       'Content-Type': 'application/json',
@@ -47,12 +54,13 @@ async function getUserRole() {
     }
   })
 
+  if (!response.ok) {
+    const user = loadMockUser()
+    return user.role || (user.user && user.user.role)
+  }
 
-  if (!response.ok) throw new Error('Не удалось получить роль')
   const data = await response.json()
-  const role = data.role || (data.user && data.user.role)
-  return role
-
+  return data.role || (data.user && data.user.role)
 }
 
 router.beforeEach(async (to, from, next) => {

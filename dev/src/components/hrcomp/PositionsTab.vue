@@ -63,6 +63,7 @@ import { ref, onMounted } from 'vue'
 
 import CreatePositionPopup from './CreatePositionPopup.vue'
 import EditPositionPopup from './EditPositionPopup.vue'
+import { getMockPositions, withMockFallback } from '@/utils/mock'
 
 const positions = ref([])
 const loading = ref(false)
@@ -76,18 +77,18 @@ async function fetchPositions() {
   error.value = null
   try {
     const accessToken = localStorage.getItem('access_token')
-    const res = await fetch('http://profguide.leganyst.ru:61180/hr/positions/all', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
-    if (!res.ok) throw new Error('Ошибка при загрузке списка должностей')
-    const data = await res.json()
-    positions.value = data
+    positions.value = await withMockFallback(
+      () => fetch('http://profguide.leganyst.ru:61180/hr/positions/all', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        }
+      }),
+      () => getMockPositions()
+    )
   } catch (err) {
-    error.value = err.message
+    positions.value = getMockPositions()
     console.error(err)
   } finally {
     loading.value = false

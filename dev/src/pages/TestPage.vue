@@ -3,7 +3,7 @@
       <main>
         <div class="top-block">
           <h2 class="test-title">Тест {{ test?.id }}</h2>
-          <span class="test-name">{{ test?.name }}</span>
+          <span class="test-name">{{ test?.title }}</span>
         </div>
         <div class="test-description" v-html="htmlDescription" />
         <div class="questions" v-if="test?.questions?.length">

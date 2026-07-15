@@ -1,5 +1,14 @@
 // src/stores/auth.js
 import { defineStore } from 'pinia'
+import {
+  findDemoCredential,
+  getMockAuthTokens,
+  getMockUserByEmail,
+  saveMockUser,
+  loadMockUser,
+  clearMockUser,
+  isMockToken,
+} from '@/utils/mock'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -64,29 +73,44 @@ export const useAuthStore = defineStore('auth', {
         })
 
         const data = await response.json()
-        
+
         if (!response.ok) {
           throw new Error(data.message || 'Ошибка при логине')
         }
 
-        // Сохраняем токены
+        clearMockUser()
         this.setTokens({
           accessToken: data.access_token,
           refreshToken: data.refresh_token,
           expiresAt: data.expires_at
         })
 
-        // Загружаем данные пользователя
         await this.fetchUser()
-
       } catch (error) {
-        throw error
+        const demo = findDemoCredential(email, password)
+        if (!demo) throw error
+
+        const tokens = getMockAuthTokens()
+        const user = getMockUserByEmail(email) || getDefaultMockUser()
+        saveMockUser(user)
+
+        this.setTokens({
+          accessToken: tokens.access_token,
+          refreshToken: tokens.refresh_token,
+          expiresAt: tokens.expires_at
+        })
+        this.user = user
       }
     },
 
     // Получение данных пользователя после авторизации
     async fetchUser() {
       if (!this.accessToken) return
+
+      if (isMockToken(this.accessToken)) {
+        this.user = loadMockUser()
+        return
+      }
 
       try {
         const response = await fetch('http://profguide.leganyst.ru:61180/employee/me', {
@@ -103,10 +127,10 @@ export const useAuthStore = defineStore('auth', {
           throw new Error(data.message || 'Ошибка при загрузке пользователя')
         }
 
-        this.user = data // Сохраняем пользователя
-
+        this.user = data
       } catch (error) {
-        console.error("Ошибка загрузки пользователя:", error.message)
+        console.error('Ошибка загрузки пользователя:', error.message)
+        this.user = loadMockUser()
       }
     },
 
@@ -120,6 +144,7 @@ export const useAuthStore = defineStore('auth', {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
       localStorage.removeItem('expires_at')
+      clearMockUser()
     }
   }
 })

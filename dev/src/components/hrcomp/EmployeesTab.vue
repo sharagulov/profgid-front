@@ -53,6 +53,7 @@
 import { ref, onMounted } from 'vue'
 import EditUserPopup from './EditUserPopup.vue'
 import CreateUserPopup from './CreateUserPopup.vue'
+import { getMockEmployees, getMockProfessions, withMockFallback } from '@/utils/mock'
 
 const users = ref([])
 const loadingUsers = ref(false)
@@ -69,13 +70,15 @@ const positionNameMap = ref({})
 async function fetchAllPositions() {
   try {
     const token = localStorage.getItem('access_token')
-    const res = await fetch('http://profguide.leganyst.ru:61180/hr/professions/all', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
-    })
-    const professions = await res.json()
+    const professions = await withMockFallback(
+      () => fetch('http://profguide.leganyst.ru:61180/hr/professions/all', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      }),
+      () => getMockProfessions()
+    )
     const map = {}
     professions.forEach(prof => {
       (prof.positions || []).forEach(pos => {
@@ -98,13 +101,15 @@ const fetchUsers = async () => {
   usersError.value = null
   try {
     const accessToken = localStorage.getItem('access_token')
-    const res = await fetch('http://profguide.leganyst.ru:61180/hr/employees/all', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
-    const list = await res.json()
+    const list = await withMockFallback(
+      () => fetch('http://profguide.leganyst.ru:61180/hr/employees/all', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        }
+      }),
+      () => getMockEmployees()
+    )
 
     users.value = list.map((entity, index) => ({
       id: index + 1,
@@ -116,7 +121,15 @@ const fetchUsers = async () => {
       raw: entity
     }))
   } catch (err) {
-    usersError.value = 'Ошибка загрузки сотрудников'
+    users.value = getMockEmployees().map((entity, index) => ({
+      id: index + 1,
+      name: entity.user.full_name,
+      profession: entity.employee.profession?.name || '—',
+      position: entity.employee.position?.name || '—',
+      experience: calculateExperienceFromCompanyStart(entity.employee.company_start),
+      lastUpdated: formatDate(entity.employee.last_promotion),
+      raw: entity
+    }))
     console.error(err)
   } finally {
     loadingUsers.value = false

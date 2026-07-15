@@ -115,7 +115,7 @@ import AttestationComponent     from '@/components/AttestationComponent.vue'
 import UserStatisticsComponent  from '@/components/UserStatisticsComponent.vue'
 import EventComponent           from '@/components/EventComponent.vue'
 
-import fake from '@/fake_db/db.json'      // ← здесь ваши тесты
+import { getMockTests, isMockToken, loadMockUser, getMockAdaptaciaArticles, withMockFallback } from '@/utils/mock'
 
 /* ─────────── reactive state ─────────── */
 const user            = ref(null)
@@ -123,7 +123,7 @@ const articles        = ref([])
 const articlesLoading = ref(true)
 const articlesError   = ref(null)
 
-const tests = ref(fake.tests)   // пока оставляем мок
+const tests = ref(getMockTests())
 
 const router = useRouter()
 
@@ -135,31 +135,39 @@ const openTest    = id => router.push(`/adaptacia/test/${id}`)
 onMounted(async () => {
   try {
     const token = localStorage.getItem('access_token')
-    if (!token) return        // не залогинен
+    if (!token) return
 
-    /* 1. пользователь */
-    const meRes = await fetch('http://profguide.leganyst.ru:61180/employee/me', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    if (!meRes.ok) throw new Error('Не удалось получить пользователя')
-    const me = await meRes.json()
+    if (isMockToken(token)) {
+      user.value = loadMockUser()
+      articles.value = getMockAdaptaciaArticles()
+      return
+    }
+
+    const me = await withMockFallback(
+      () => fetch('http://profguide.leganyst.ru:61180/employee/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      }),
+      () => loadMockUser()
+    )
     user.value = me
 
-    /* 2. статьи для текущей должности */
     const posId = me.employee?.current_position_id
-if (!posId) throw new Error('У пользователя не указана должность')
+    if (!posId) throw new Error('У пользователя не указана должность')
 
-const artRes = await fetch(
-  `http://profguide.leganyst.ru:61180/employee/positions/${posId}/articles`,
-  { headers: { Authorization: `Bearer ${token}` } }
-)
-if (!artRes.ok) throw new Error('Не удалось загрузить статьи')
+    const list = await withMockFallback(
+      () => fetch(
+        `http://profguide.leganyst.ru:61180/employee/positions/${posId}/articles`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      ),
+      () => getMockAdaptaciaArticles()
+    )
 
-articles.value = (await artRes.json())
-  //  ↑  получаем массив
-  .sort((a, b) => a.id - b.id)   // ← сортируем по id (возрастание)
+    articles.value = (Array.isArray(list) ? list : [])
+      .sort((a, b) => a.id - b.id)
   } catch (err) {
     articlesError.value = err.message
+    user.value = loadMockUser()
+    articles.value = getMockAdaptaciaArticles()
     console.error(err)
   } finally {
     articlesLoading.value = false

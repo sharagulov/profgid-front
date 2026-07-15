@@ -66,7 +66,7 @@ import AchievementComponent from '@/components/AchievementComponent.vue'
 import AttestationComponent from '@/components/AttestationComponent.vue'
 import UserStatisticsComponent from '@/components/UserStatisticsComponent.vue'
 import EventComponent from '@/components/EventComponent.vue'
-import TooltipComponent from '@/components/TooltipComponent.vue'
+import { isMockToken, loadMockUser, withMockFallback } from '@/utils/mock'
 
 const router = useRouter()
 const user = ref(null)
@@ -76,16 +76,25 @@ const fetchUser = async () => {
     const accessToken = localStorage.getItem('access_token')
     if (!accessToken) return
 
-    const response = await fetch('http://profguide.leganyst.ru:61180/employee/me', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`
+    if (isMockToken(accessToken)) {
+      user.value = loadMockUser()
+      const role = user.value.role || user.value.user?.role
+      if (role === 'hr' || role === 'admin') {
+        router.replace({ name: 'HrPage' })
       }
-    })
+      return
+    }
 
-    const data = await response.json()
-    if (!response.ok) throw new Error(data.message || 'Ошибка при загрузке пользователя')
+    const data = await withMockFallback(
+      () => fetch('http://profguide.leganyst.ru:61180/employee/me', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        }
+      }),
+      () => loadMockUser()
+    )
 
     const role = data.role || (data.user && data.user.role)
     if (role === 'hr' || role === 'admin') {
@@ -96,6 +105,7 @@ const fetchUser = async () => {
     user.value = data
   } catch (error) {
     console.error('Ошибка загрузки пользователя:', error.message)
+    user.value = loadMockUser()
   }
 }
 

@@ -55,7 +55,7 @@
                 </TooltipComponent>
               </div>
             </div>
-            <TasksComponent />
+            <TasksComponent :user="tasksUser" />
           </div>
 
           <!-- Календарь + мероприятия -->
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import TooltipComponent       from '@/components/TooltipComponent.vue'
@@ -112,6 +112,7 @@ import UserStatisticsComponent from '@/components/UserStatisticsComponent.vue'
 import EventComponent         from '@/components/EventComponent.vue'
 import RoadmapComponent       from '@/components/RoadmapComponent.vue'
 import TasksComponent         from '@/components/TasksComponent.vue'
+import { isMockToken, loadMockUser, withMockFallback } from '@/utils/mock'
 
 export default {
   components: {
@@ -134,16 +135,21 @@ export default {
         const accessToken = localStorage.getItem('access_token')
         if (!accessToken) return
 
-        const response = await fetch('http://profguide.leganyst.ru:61180/employee/me', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
+        if (isMockToken(accessToken)) {
+          user.value = loadMockUser()
+          return
+        }
 
-        const data = await response.json()
-        if (!response.ok) throw new Error(data.message || 'Ошибка при загрузке пользователя')
+        const data = await withMockFallback(
+          () => fetch('http://profguide.leganyst.ru:61180/employee/me', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`
+            }
+          }),
+          () => loadMockUser()
+        )
 
         const role = data.role || (data.user && data.user.role)
         if (role === 'hr' || role === 'admin') {
@@ -154,12 +160,21 @@ export default {
         user.value = data
       } catch (error) {
         console.error('Ошибка загрузки пользователя:', error.message)
+        user.value = loadMockUser()
       }
     }
 
     onMounted(fetchUser)
 
-    return { user }
+    const tasksUser = computed(() => {
+      if (!user.value) return null
+      return {
+        position: user.value.employee?.profession?.name || 'Оператор линии',
+        rank: user.value.employee?.profession?.category ?? 3
+      }
+    })
+
+    return { user, tasksUser }
   }
 }
 </script>

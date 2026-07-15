@@ -50,6 +50,7 @@
 import { ref, onMounted } from 'vue'
 import CreateProfessionPopup from './CreateProfessionPopup.vue'
 import EditProfessionPopup from './EditProfessionPopup.vue'
+import { getMockProfessions, withMockFallback } from '@/utils/mock'
 
 const professions = ref([])
 const loading = ref(false)
@@ -62,17 +63,19 @@ async function fetchProfessions() {
   error.value = null
   try {
     const accessToken = localStorage.getItem('access_token')
-    const res = await fetch('http://profguide.leganyst.ru:61180/hr/professions/all', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
-    if (!res.ok) throw new Error('Ошибка при загрузке списка должностей')
-    professions.value = await res.json()
+    professions.value = await withMockFallback(
+      () => fetch('http://profguide.leganyst.ru:61180/hr/professions/all', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        }
+      }),
+      () => getMockProfessions()
+    )
   } catch (err) {
-    error.value = err.message
+    professions.value = getMockProfessions()
+    console.error(err)
   } finally {
     loading.value = false
   }

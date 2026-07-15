@@ -69,6 +69,7 @@
 import { ref, onMounted } from 'vue'
 import CreateArticlePopup from './CreateArticlePopup.vue'
 import EditArticlePopup from './EditArticlePopup.vue'
+import { getMockHrArticles, withMockFallback } from '@/utils/mock'
 
 /* ─ state ─────────────────────────────────────────────────────────────── */
 const articles     = ref([])
@@ -83,14 +84,15 @@ async function fetchArticles () {
   error.value   = null
   try {
     const token = localStorage.getItem('access_token')
-    const res   = await fetch(
-      'http://profguide.leganyst.ru:61180/hr/articles/all',
-      { headers: { Authorization: `Bearer ${token}` } }
+    articles.value = await withMockFallback(
+      () => fetch(
+        'http://profguide.leganyst.ru:61180/hr/articles/all',
+        { headers: { Authorization: `Bearer ${token}` } }
+      ),
+      () => getMockHrArticles()
     )
-    if (!res.ok) throw new Error('Ошибка при загрузке статей')
-    articles.value = await res.json()
   } catch (err) {
-    error.value = err.message
+    articles.value = getMockHrArticles()
     console.error(err)
   } finally {
     loading.value = false

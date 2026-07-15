@@ -87,8 +87,8 @@ const props = defineProps({
   user: {
     type: Object,
     default: () => ({
-      position: "Оператор линии",
-      category: 3
+      position: 'Оператор линии',
+      rank: 3
     })
   }
 })
@@ -103,7 +103,7 @@ const roadmapItem = computed(() => {
     item =>
       item.from.position === props.user.position &&
       item.from.category === Number(props.user.rank)
-  );
+  )
 
   return foundItem || {
     reqArticles: [1, 2, 3],
